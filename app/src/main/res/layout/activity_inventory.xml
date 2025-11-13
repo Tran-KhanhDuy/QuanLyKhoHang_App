@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="16dp"
+        android:background="#F5F5F5">
+
+        <!-- Nút quay lại ở góc trái -->
+        <ImageButton
+            android:id="@+id/btnReturn"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:src="@drawable/return_button"
+            android:background="@android:color/transparent"
+            android:contentDescription="Quay lại"
+            android:layout_gravity="start"
+            android:layout_marginBottom="8dp"/>
+
+        <!-- Tiêu đề danh sách tồn kho như cũ -->
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Danh Sách Tồn Kho"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            android:gravity="center"
+            android:textColor="#2196F3"
+            android:layout_marginBottom="16dp"/>
+
+        <Button
+            android:id="@+id/btnAdd"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:text="Thêm Sản Phẩm"
+            android:textSize="16sp"
+            android:backgroundTint="#4CAF50"
+            android:textColor="#FFFFFF"
+            android:layout_marginBottom="10dp"/>
+
+        <!-- nếu code kia lỗi thì dùng code này
+        <ListView
+                   android:id="@+id/lvInventory"
+                   android:layout_width="match_parent"
+                   android:layout_height="485dp"
+                   android:divider="#BDBDBD"
+                   android:dividerHeight="1dp" />
+       -->
+        <ListView
+            android:id="@+id/lvInventory"
+            android:layout_width="match_parent"
+            android:layout_height="444dp"
+            android:layout_weight="1"
+            android:divider="#BDBDBD"
+            android:dividerHeight="1dp" />
+
+    </LinearLayout>
+</ScrollView>

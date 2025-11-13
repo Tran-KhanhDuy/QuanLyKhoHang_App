@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="16dp"
+    android:background="#F6F7FB">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Quản Lý Kho Hàng"
+        android:textSize="28sp"
+        android:textStyle="bold"
+        android:gravity="center"
+        android:textColor="#2196F3"
+        android:layout_marginBottom="32dp"
+        android:layout_marginTop="16dp"/>
+
+    <!-- Nút Import là icon + chữ dưới dạng LinearLayout con -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center"
+        android:layout_marginBottom="16dp">
+
+        <!-- Nút Import: icon + chữ dọc -->
+        <LinearLayout
+            android:layout_width="130dp"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:gravity="center"
+            android:padding="8dp"
+            android:clickable="true"
+            android:focusable="true"
+            android:id="@+id/btnImportLayout">
+
+            <ImageView
+                android:id="@+id/imgImport"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:src="@drawable/ic_import"
+                android:contentDescription="Nhập Hàng"/>
+
+            <TextView
+                android:id="@+id/tvImportText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Nhập Hàng"
+                android:textSize="16sp"
+                android:textColor="#4CAF50"
+                android:textStyle="bold"
+                android:gravity="center"
+                android:layout_marginTop="8dp"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/btnExportLayout"
+            android:layout_width="130dp"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:gravity="center"
+            android:padding="8dp"
+            android:clickable="true"
+            android:focusable="true"
+            android:layout_marginEnd="12dp">
+
+            <ImageView
+                android:id="@+id/imgExport"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:contentDescription="Xuất Hàng"
+                android:src="@drawable/ic_export" />
+            <TextView
+                android:id="@+id/tvExportText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Xuất Hàng"
+                android:textSize="16sp"
+                android:textColor="#FF9800"
+                android:textStyle="bold"
+                android:gravity="center"
+                android:layout_marginTop="8dp"/>
+        </LinearLayout>
+        <!-- Nút Inventory -->
+        <LinearLayout
+            android:id="@+id/btnInventoryLayout"
+            android:layout_width="130dp"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:gravity="center"
+            android:padding="8dp"
+            android:clickable="true"
+            android:focusable="true">
+
+            <ImageView
+                android:id="@+id/imgInventory"
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                android:src="@drawable/ic_inventory"
+                android:contentDescription="Danh Sách Tồn Kho"/>
+
+            <TextView
+                android:id="@+id/tvInventoryText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Danh Sách Tồn Kho"
+                android:textSize="16sp"
+                android:textColor="#2196F3"
+                android:textStyle="bold"
+                android:gravity="center"
+                android:layout_marginTop="8dp"/>
+        </LinearLayout>
+    </LinearLayout>
+</LinearLayout>
