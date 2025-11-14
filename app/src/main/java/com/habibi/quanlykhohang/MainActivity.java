@@ -6,15 +6,29 @@ import android.os.Bundle;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.Toast;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 public class MainActivity extends AppCompatActivity {
 
     private Button btnImport, btnExport, btnInventory;
-//alo
+    private Retrofit retrofit;
+    public static ProductApiService api;
+
+    //alo
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        // Khởi tạo Retrofit và API Service
+        retrofit = new Retrofit.Builder()
+                .baseUrl("https://gelatinously-commutative-jerrie.ngrok-free.dev/api/")
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+
+        // Singleton cho toàn app dùng chung hoặc truyền vào Activity khác
+        api = retrofit.create(ProductApiService.class);
 
         LinearLayout btnImport = findViewById(R.id.btnImportLayout);
         btnImport.setOnClickListener(v ->{

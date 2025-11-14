@@ -54,6 +54,7 @@ public class InventoryActivity extends AppCompatActivity {
             Intent intent = new Intent(InventoryActivity.this, ImportActivity.class);
             startActivity(intent);
         });
+
     }
 
     private void loadInventoryFromApi() {
