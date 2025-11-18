@@ -1,3 +1,36 @@
 <resources>
     <string name="app_name">QuanLyKhoHang</string>
+
+    <!-- ExportActivity -->
+    <string name="export_product_title">Xuất Hàng Kho</string>
+    <string name="scan_barcode_button">Quét Mã Vạch</string>
+    <string name="barcode_label">Mã Vạch:</string>
+    <string name="barcode_hint">Quét mã vạch</string>
+    <string name="product_name_label">Tên: %1$s</string>
+    <string name="current_stock_label">Tồn kho: %1$d</string>
+    <string name="export_quantity_label">Số Lượng Xuất:</string>
+    <string name="decrease_button">-</string>
+    <string name="increase_button">+</string>
+    <string name="quantity_hint">Nhập số lượng</string>
+    <string name="price_label">Giá:</string>
+    <string name="price_hint">Nhập giá</string>
+    <string name="location_label">Vị Trí Kho:</string>
+    <string name="location_hint">Ví dụ: A1, B2...</string>
+    <string name="unit_label">Đơn vị tính:</string>
+    <string name="unit_hint">cái, thùng, hộp...</string>
+    <string name="description_label">Mô tả sản phẩm:</string>
+    <string name="description_hint">Nhập mô tả</string>
+    <string name="export_button">Xuất Hàng</string>
+    <string name="scan_prompt">Quét mã vạch sản phẩm xuất</string>
+    <string name="no_product_data">Không có dữ liệu sản phẩm!</string>
+    <string name="network_error">Lỗi mạng khi lấy sản phẩm!</string>
+    <string name="error_title">Lỗi</string>
+    <string name="fill_all_fields_error">Vui lòng nhập đủ tất cả thông tin!</string>
+    <string name="quantity_must_be_positive_error">Số lượng phải lớn hơn 0!</string>
+    <string name="invalid_price_or_quantity_error">Giá hoặc số lượng nhập không hợp lệ!</string>
+    <string name="demo_alert_title">Demo</string>
+    <string name="demo_alert_message">Bạn cần chỉnh sửa phương thức này phù hợp với API backend nhận dữ liệu xuất kho thực tế.</string>
+    <string name="product_name_default">Tên: --</string>
+    <string name="current_stock_default">Tồn kho: --</string>
+    <string name="return_button_description">Quay lại</string>
 </resources>

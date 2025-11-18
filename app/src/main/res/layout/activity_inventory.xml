@@ -10,7 +10,7 @@
         android:padding="16dp"
         android:background="#F5F5F5">
 
-        <!-- Nút quay lại ở góc trái -->
+        <!-- Nút quay lại -->
         <ImageButton
             android:id="@+id/btnReturn"
             android:layout_width="40dp"
@@ -21,17 +21,18 @@
             android:layout_gravity="start"
             android:layout_marginBottom="8dp"/>
 
-        <!-- Tiêu đề danh sách tồn kho như cũ -->
+        <!-- Tiêu đề -->
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Danh Sách Tồn Kho"
+            android:text="Danh Sách Sản Phẩm"
             android:textSize="24sp"
             android:textStyle="bold"
             android:gravity="center"
             android:textColor="#2196F3"
             android:layout_marginBottom="16dp"/>
 
+        <!-- Nút thêm sản phẩm -->
         <Button
             android:id="@+id/btnAdd"
             android:layout_width="match_parent"
@@ -42,21 +43,12 @@
             android:textColor="#FFFFFF"
             android:layout_marginBottom="10dp"/>
 
-        <!-- nếu code kia lỗi thì dùng code này
-        <ListView
-                   android:id="@+id/lvInventory"
-                   android:layout_width="match_parent"
-                   android:layout_height="485dp"
-                   android:divider="#BDBDBD"
-                   android:dividerHeight="1dp" />
-       -->
+        <!-- Danh sách sản phẩm (ListView) -->
         <ListView
             android:id="@+id/lvInventory"
             android:layout_width="match_parent"
-            android:layout_height="444dp"
-            android:layout_weight="1"
+            android:layout_height="485dp"
             android:divider="#BDBDBD"
             android:dividerHeight="1dp" />
-
     </LinearLayout>
 </ScrollView>

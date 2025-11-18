@@ -1,20 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <!-- Main content -->
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:background="#F5F5F5"
         android:orientation="vertical"
-        android:padding="16dp"
-        >
+        android:padding="16dp">
 
-
-
-        <!-- Nút quay lại ở góc trái -->
+        <!-- Nút quay lại -->
         <ImageButton
             android:id="@+id/btnReturn"
             android:layout_width="40dp"
@@ -35,9 +31,10 @@
             android:textSize="24sp"
             android:textStyle="bold" />
 
+        <!-- Quét mã + các trường -->
         <Button
             android:id="@+id/btnScan"
-            android:layout_width="375dp"
+            android:layout_width="match_parent"
             android:layout_height="50dp"
             android:layout_marginBottom="16dp"
             android:backgroundTint="#2196F3"
@@ -59,10 +56,11 @@
             android:enabled="false"
             android:hint="Quét mã vạch"
             android:inputType="text"
-            android:padding="8dp" />
+            android:padding="8dp"
+            android:textColor="#000000" />
 
         <TextView
-            android:id="@+id/tvProductName"
+            android:id="@+id/etName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="8dp"
@@ -89,22 +87,130 @@
             android:text="Số Lượng Xuất:"
             android:textStyle="bold" />
 
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp">
+
+            <Button
+                android:id="@+id/btnDecrease"
+                android:layout_width="50dp"
+                android:layout_height="45dp"
+                android:text="-"
+                android:textSize="22sp"
+                android:backgroundTint="#E57373"
+                android:textColor="#FFFFFF"/>
+
+            <EditText
+                android:id="@+id/etQuantity"
+                android:layout_width="0dp"
+                android:layout_height="45dp"
+                android:layout_weight="1"
+                android:hint="Nhập số lượng"
+                android:inputType="number"
+                android:padding="8dp"
+                android:textColor="#000000" />
+
+            <Button
+                android:id="@+id/btnIncrease"
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                android:text="+"
+                android:textSize="60sp"
+                android:backgroundTint="#4CAF50"
+                android:textColor="#FFFFFF"/>
+
+
+        </LinearLayout>
+
+        <!-- Giá sản phẩm -->
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="4dp"
+            android:text="Giá:"
+            android:textStyle="bold" />
         <EditText
-            android:id="@+id/etQuantity"
+            android:id="@+id/etPrice"
             android:layout_width="match_parent"
             android:layout_height="45dp"
-            android:layout_marginBottom="32dp"
-            android:hint="Nhập số lượng"
-            android:inputType="number"
-            android:padding="8dp" />
+            android:layout_marginBottom="12dp"
+            android:hint="Nhập giá"
+            android:inputType="numberDecimal"
+            android:padding="8dp"
+            android:textColor="#000000" />
 
+        <!-- Vị trí kho -->
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="4dp"
+            android:text="Vị Trí Kho:"
+            android:textStyle="bold" />
+        <EditText
+            android:id="@+id/etLocation"
+            android:layout_width="match_parent"
+            android:layout_height="45dp"
+            android:layout_marginBottom="12dp"
+            android:hint="Ví dụ: A1, B2..."
+            android:inputType="text"
+            android:padding="8dp"
+            android:textColor="#000000" />
+
+        <!-- Đơn vị tính -->
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="4dp"
+            android:text="Đơn vị tính:"
+            android:textStyle="bold" />
+        <EditText
+            android:id="@+id/etProductUnit"
+            android:layout_width="match_parent"
+            android:layout_height="45dp"
+            android:layout_marginBottom="12dp"
+            android:hint="cái, thùng, hộp..."
+            android:inputType="text"
+            android:padding="8dp"
+            android:textColor="#000000" />
+
+        <!-- Mô tả sản phẩm -->
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="4dp"
+            android:text="Mô tả sản phẩm:"
+            android:textStyle="bold" />
+        <EditText
+            android:id="@+id/etProductDescription"
+            android:layout_width="match_parent"
+            android:layout_height="45dp"
+            android:layout_marginBottom="12dp"
+            android:hint="Nhập mô tả"
+            android:inputType="text"
+            android:padding="8dp"
+            android:textColor="#000000" />
+        <TextView
+            android:id="@+id/tvCreateDate"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Ngày tạo: "/>
+        <TextView
+            android:id="@+id/tvUpdateDate"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Ngày cập nhật: "/>
+        <!-- Nút xuất ở dưới cùng -->
         <Button
             android:id="@+id/btnExport"
             android:layout_width="match_parent"
             android:layout_height="60dp"
             android:backgroundTint="#FF9800"
             android:text="Xuất Hàng"
-            android:textSize="18sp" />
-    </LinearLayout>
+            android:textSize="18sp"
+            android:layout_marginTop="12dp" />
 
-</FrameLayout>
+    </LinearLayout>
+</ScrollView>

@@ -7,15 +7,18 @@ import android.os.Bundle;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
 import android.widget.ImageButton;
+import java.io.IOException;
+import android.util.Log;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
 
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-
 
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
@@ -24,10 +27,9 @@ public class ImportActivity extends AppCompatActivity {
     private Retrofit retrofit;
     private ProductApiService apiService;
 
-    private EditText etBarcode, etName, etPrice, etQuantity, etLocation;
+    private EditText etProductCode, etProductName, etPrice, etQuantity, etLocation, etProductUnit, etProductDescription;
     private Button btnScan, btnSave;
-    private TextView tvStatus;
-    private DatabaseHelper dbHelper;
+    private TextView tvStatus, tvCreateDate, tvUpdateDate;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,21 +37,26 @@ public class ImportActivity extends AppCompatActivity {
         setContentView(R.layout.activity_import);
 
         retrofit = new Retrofit.Builder()
-                .baseUrl("https://gelatinously-commutative-jerrie.ngrok-free.dev/api/productsapi/") // Thay bằng link ngrok của bạn!
+                .baseUrl("https://gelatinously-commutative-jerrie.ngrok-free.dev/api/") // Kết thúc bằng /
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
 
         apiService = retrofit.create(ProductApiService.class);
 
-
-        etBarcode = findViewById(R.id.etBarcode);
-        etName = findViewById(R.id.etName);
+        etProductCode = findViewById(R.id.etBarcode);
+        etProductName = findViewById(R.id.etName);
         etPrice = findViewById(R.id.etPrice);
         etQuantity = findViewById(R.id.etQuantity);
         etLocation = findViewById(R.id.etLocation);
+        etProductUnit = findViewById(R.id.etProductUnit);
+        etProductDescription = findViewById(R.id.etProductDescription);
         btnScan = findViewById(R.id.btnScan);
         btnSave = findViewById(R.id.btnSave);
         tvStatus = findViewById(R.id.tvStatus);
+        TextView tvCreateDate = findViewById(R.id.tvCreateDate);
+        TextView tvUpdateDate = findViewById(R.id.tvUpdateDate);
+
+
 
         btnScan.setOnClickListener(v -> scanBarcode());
         btnSave.setOnClickListener(v -> saveImport());
@@ -58,6 +65,7 @@ public class ImportActivity extends AppCompatActivity {
         btnReturn.setOnClickListener(v -> {
             Intent intent = new Intent(ImportActivity.this, MainActivity.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+            startActivity(intent);
             finish();
         });
     }
@@ -76,36 +84,27 @@ public class ImportActivity extends AppCompatActivity {
         IntentResult result = IntentIntegrator.parseActivityResult(requestCode, resultCode, data);
         super.onActivityResult(requestCode, resultCode, data);
 
-        if (result != null) {
-            if (result.getContents() != null) {
-                String barcode = result.getContents();
-                etBarcode.setText(barcode);
-
-                Product existingProduct = dbHelper.getProductByBarcode(barcode);
-                if (existingProduct != null) {
-                    etName.setText(existingProduct.getName());
-                    etPrice.setText(String.valueOf(existingProduct.getPrice()));
-                    etLocation.setText(existingProduct.getLocation());
-                    tvStatus.setText("✓ Sản phẩm đã tồn tại. Tồn kho: " + existingProduct.getQuantity());
-                    etQuantity.requestFocus();
-                } else {
-                    tvStatus.setText("📝 Sản phẩm mới, điền thêm thông tin");
-                    etName.requestFocus();
-                }
-            }
+        if (result != null && result.getContents() != null) {
+            String productCode = result.getContents();
+            etProductCode.setText(productCode);
+            tvStatus.setText("📝 Đã quét mã: " + productCode + "\nNhập thông tin để lưu!");
+            etProductName.requestFocus();
         }
     }
 
     private void saveImport() {
-        String barcode = etBarcode.getText().toString().trim();
-        String name = etName.getText().toString().trim();
+        String code = etProductCode.getText().toString().trim();
+        String name = etProductName.getText().toString().trim();
         String priceText = etPrice.getText().toString().trim();
         String quantityText = etQuantity.getText().toString().trim();
         String location = etLocation.getText().toString().trim();
+        String unit = etProductUnit.getText().toString().trim();
+        String desc = etProductDescription.getText().toString().trim();
 
-        if (barcode.isEmpty() || name.isEmpty() || priceText.isEmpty() ||
-                quantityText.isEmpty() || location.isEmpty()) {
-            showAlert("Lỗi", "Vui lòng điền đầy đủ thông tin");
+        if (code.isEmpty() || name.isEmpty() || priceText.isEmpty() ||
+                quantityText.isEmpty() || location.isEmpty() ||
+                unit.isEmpty() || desc.isEmpty()) {
+            showAlert("Lỗi", "Vui lòng điền đầy đủ tất cả thông tin");
             return;
         }
 
@@ -113,28 +112,14 @@ public class ImportActivity extends AppCompatActivity {
             double price = Double.parseDouble(priceText);
             int quantity = Integer.parseInt(quantityText);
 
-            if (quantity <= 0) {
-                showAlert("Lỗi", "Số lượng phải lớn hơn 0");
-                return;
-            }
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());
+            String now = sdf.format(new Date());
 
-            Product existingProduct = dbHelper.getProductByBarcode(barcode);
+            Product newProduct = new Product(
+                    code, name, price, quantity, location, unit, desc, now, now
+            );
+            addProductToApi(newProduct);
 
-            if (existingProduct != null) {
-                // Sản phẩm đã tồn tại, vẫn cập nhật tồn kho LOCAL (nếu muốn giữ tính năng nhập nhanh offline)
-                if (dbHelper.updateInventory(barcode, quantity)) {
-                    showAlert("Thành công", "Nhập hàng thành công!\nTồn kho mới: " +
-                            (existingProduct.getQuantity() + quantity), () -> {
-                        clearForm();
-                    });
-                } else {
-                    showAlert("Lỗi", "Không thể cập nhật hàng");
-                }
-            } else {
-                // Sản phẩm mới, gọi lên API để thêm vào database chung
-                Product newProduct = new Product(barcode, name, price, quantity, location);
-                addProductToApi(newProduct); // HÀM NÀY gửi dữ liệu lên API qua Retrofit
-            }
         } catch (NumberFormatException e) {
             showAlert("Lỗi", "Giá hoặc số lượng không hợp lệ");
         }
@@ -150,7 +135,17 @@ public class ImportActivity extends AppCompatActivity {
                         clearForm();
                     });
                 } else {
-                    showAlert("Lỗi", "Không thể thêm sản phẩm qua API (error " + response.code() + ")");
+                    String errorMsg = "Không thể thêm sản phẩm qua API (mã lỗi " + response.code() + ")";
+                    if (response.errorBody() != null) {
+                        try {
+                            String detailedError = response.errorBody().string();
+                            errorMsg += "\nChi tiết: " + detailedError;
+                            Log.e("API_ERROR", detailedError);
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                    showAlert("Lỗi", errorMsg);
                 }
             }
             @Override
@@ -160,15 +155,16 @@ public class ImportActivity extends AppCompatActivity {
         });
     }
 
-
     private void clearForm() {
-        etBarcode.setText("");
-        etName.setText("");
+        etProductCode.setText("");
+        etProductName.setText("");
         etPrice.setText("");
         etQuantity.setText("");
         etLocation.setText("");
+        etProductUnit.setText("");
+        etProductDescription.setText("");
         tvStatus.setText("");
-        etBarcode.requestFocus();
+        etProductCode.requestFocus();
     }
 
     private void showAlert(String title, String message, Runnable onOK) {

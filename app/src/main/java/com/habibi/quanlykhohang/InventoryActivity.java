@@ -1,13 +1,19 @@
 package com.habibi.quanlykhohang;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,9 +28,8 @@ import retrofit2.Response;
 public class InventoryActivity extends AppCompatActivity {
 
     private ListView lvInventory;
-    // private DatabaseHelper dbHelper;  // KHÔNG dùng SQLite nữa
+    private final ArrayList<Product> productList = new ArrayList<>();
 
-    private Retrofit retrofit;
     private ProductApiService apiService;
 
     @Override
@@ -34,67 +39,84 @@ public class InventoryActivity extends AppCompatActivity {
 
         lvInventory = findViewById(R.id.lvInventory);
 
-        // Khởi tạo Retrofit
-        retrofit = new Retrofit.Builder()
-                .baseUrl("https://gelatinously-commutative-jerrie.ngrok-free.dev/api/") // Thay bằng link ngrok của bạn!
+        // Khởi tạo Retrofit (nếu dùng API)
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl("https://gelatinously-commutative-jerrie.ngrok-free.dev/api/") // link của bạn
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
         apiService = retrofit.create(ProductApiService.class);
 
+        // Gọi API lấy danh sách sản phẩm thật
         loadInventoryFromApi();
 
-        ImageButton btnReturn = findViewById(R.id.btnReturn);
-        btnReturn.setOnClickListener(v -> {
-            Intent intent = new Intent(InventoryActivity.this, MainActivity.class);
-            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
-            finish();
+        lvInventory.setOnItemClickListener((parent, view, position, id) -> {
+            Product selected = productList.get(position);
+            Intent intent = new Intent(InventoryActivity.this, ProductInfoActivity.class);
+            intent.putExtra("product", selected);
+            startActivity(intent);
         });
+
+        // Xử lý nút quay lại và thêm sản phẩm nếu có trong layout:
+        ImageButton btnReturn = findViewById(R.id.btnReturn);
+        btnReturn.setOnClickListener(v -> finish());
         Button btnAdd = findViewById(R.id.btnAdd);
         btnAdd.setOnClickListener(v -> {
             Intent intent = new Intent(InventoryActivity.this, ImportActivity.class);
             startActivity(intent);
         });
-
     }
 
     private void loadInventoryFromApi() {
-        Call<List<Product>> call = apiService.getAllProducts(); // hàm GET lên API
-
-        call.enqueue(new Callback<List<Product>>() {
+        apiService.getAllProducts().enqueue(new Callback<List<Product>>() {
             @Override
-            public void onResponse(Call<List<Product>> call, Response<List<Product>> response) {
-                List<String> items = new ArrayList<>();
+            public void onResponse(@NonNull Call<List<Product>> call, @NonNull Response<List<Product>> response) {
                 if (response.isSuccessful() && response.body() != null) {
-                    List<Product> products = response.body();
-                    if (products.isEmpty()) {
-                        items.add("Không có sản phẩm nào");
-                    } else {
-                        for (Product product : products) {
-                            String item = String.format(
-                                    "Mã: %s | Tên: %s | SL: %d | Vị trí: %s | Giá: %.0f",
-                                    product.getBarcode(),
-                                    product.getName(),
-                                    product.getQuantity(),
-                                    product.getLocation(),
-                                    product.getPrice()
-                            );
-                            items.add(item);
-                        }
-                    }
+                    productList.clear();
+                    productList.addAll(response.body());
+                    setupAdapter();
                 } else {
-                    items.add("Lỗi tải dữ liệu từ API!");
+                    // Fallback demo nếu API lỗi hoặc dữ liệu rỗng
+                    setupDemoDataAndAdapter();
                 }
-                ArrayAdapter<String> adapter = new ArrayAdapter<>(InventoryActivity.this, android.R.layout.simple_list_item_1, items);
-                lvInventory.setAdapter(adapter);
             }
-
             @Override
-            public void onFailure(Call<List<Product>> call, Throwable t) {
-                List<String> items = new ArrayList<>();
-                items.add("Lỗi kết nối: " + t.getMessage());
-                ArrayAdapter<String> adapter = new ArrayAdapter<>(InventoryActivity.this, android.R.layout.simple_list_item_1, items);
-                lvInventory.setAdapter(adapter);
+            public void onFailure(@NonNull Call<List<Product>> call, @NonNull Throwable t) {
+                // Fallback demo nếu kết nối API lỗi
+                setupDemoDataAndAdapter();
             }
         });
+    }
+
+    private void setupAdapter() {
+        ArrayAdapter<Product> adapter = new ArrayAdapter<Product>(this, 0, productList) {
+            @NonNull
+            @Override
+            public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
+                View listItemView = convertView;
+                if (listItemView == null) {
+                    listItemView = LayoutInflater.from(getContext()).inflate(R.layout.item_product_name, parent, false);
+                }
+
+                Product product = getItem(position);
+
+                if (product != null) {
+                    TextView nameTextView = listItemView.findViewById(R.id.tvProductName);
+                    if (nameTextView != null) {
+                        nameTextView.setText(product.getProductName());
+                    }
+                }
+
+                return listItemView;
+            }
+        };
+        lvInventory.setAdapter(adapter);
+    }
+
+    private void setupDemoDataAndAdapter() {
+        if (productList.isEmpty()) {
+            productList.add(new Product("123", "Sữa tươi", 25000.0, 10, "A1", "Hộp", "HSD 2026", "2025-11-01", "2025-11-14"));
+            productList.add(new Product("456", "Bút bi", 5000.0, 100, "B2", "Chiếc", "Bút Thiên Long", "2025-09-10", "2025-11-15"));
+        }
+        setupAdapter();
     }
 }

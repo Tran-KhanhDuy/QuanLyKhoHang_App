@@ -47,8 +47,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public boolean insertProduct(Product product) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
-        values.put(COL_BARCODE, product.getBarcode());
-        values.put(COL_NAME, product.getName());
+
         values.put(COL_PRICE, product.getPrice());
         values.put(COL_QUANTITY, product.getQuantity());
         values.put(COL_LOCATION, product.getLocation());
@@ -66,8 +65,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         if (cursor != null && cursor.moveToFirst()) {
             Product product = new Product();
             product.setId(cursor.getInt(0));
-            product.setBarcode(cursor.getString(1));
-            product.setName(cursor.getString(2));
+           // product.setBarcode(cursor.getString(1));
+            //product.setName(cursor.getString(2));
             product.setPrice(cursor.getDouble(3));
             product.setQuantity(cursor.getInt(4));
             product.setLocation(cursor.getString(5));
@@ -103,8 +102,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             do {
                 Product product = new Product();
                 product.setId(cursor.getInt(0));
-                product.setBarcode(cursor.getString(1));
-                product.setName(cursor.getString(2));
+               // product.setBarcode(cursor.getString(1));
+               // product.setName(cursor.getString(2));
                 product.setPrice(cursor.getDouble(3));
                 product.setQuantity(cursor.getInt(4));
                 product.setLocation(cursor.getString(5));
