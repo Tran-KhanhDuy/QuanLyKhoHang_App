@@ -1,5 +1,7 @@
 package com.habibi.quanlykhohang;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -29,8 +31,10 @@ public class InventoryActivity extends AppCompatActivity {
 
     private ListView lvInventory;
     private final ArrayList<Product> productList = new ArrayList<>();
-
     private ProductApiService apiService;
+
+    // Khai báo launcher để xử lý kết quả trả về sau khi xuất/xóa sản phẩm
+    private ActivityResultLauncher<Intent> exportLauncher;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,16 +43,25 @@ public class InventoryActivity extends AppCompatActivity {
 
         lvInventory = findViewById(R.id.lvInventory);
 
-        // Khởi tạo Retrofit (nếu dùng API)
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("https://gelatinously-commutative-jerrie.ngrok-free.dev/api/") // link của bạn
+                .baseUrl("https://gelatinously-commutative-jerrie.ngrok-free.dev/api/")
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
         apiService = retrofit.create(ProductApiService.class);
 
-        // Gọi API lấy danh sách sản phẩm thật
+        // Đăng ký launcher để xử lý khi ExportActivity trả về kết quả
+        exportLauncher = registerForActivityResult(
+                new ActivityResultContracts.StartActivityForResult(),
+                result -> {
+                    if (result.getResultCode() == RESULT_OK) {
+                        loadInventoryFromApi(); // Sync list chỉ khi có thay đổi
+                    }
+                }
+        );
+
         loadInventoryFromApi();
 
+        // Mở ProductInfoActivity khi click sản phẩm
         lvInventory.setOnItemClickListener((parent, view, position, id) -> {
             Product selected = productList.get(position);
             Intent intent = new Intent(InventoryActivity.this, ProductInfoActivity.class);
@@ -56,14 +69,25 @@ public class InventoryActivity extends AppCompatActivity {
             startActivity(intent);
         });
 
-        // Xử lý nút quay lại và thêm sản phẩm nếu có trong layout:
+        // Nút quay lại
         ImageButton btnReturn = findViewById(R.id.btnReturn);
         btnReturn.setOnClickListener(v -> finish());
+
+        // Nút thêm sản phẩm
         Button btnAdd = findViewById(R.id.btnAdd);
         btnAdd.setOnClickListener(v -> {
             Intent intent = new Intent(InventoryActivity.this, ImportActivity.class);
             startActivity(intent);
         });
+
+        // Ví dụ: nếu có nút xuất kho ở giao diện này,
+        // hoặc nếu muốn mở ExportActivity từ đây:
+        // Button btnExport = findViewById(R.id.btnExport);
+        // btnExport.setOnClickListener(v -> {
+        //     Intent intent = new Intent(this, ExportActivity.class);
+        //     exportLauncher.launch(intent);
+        // });
+        // Hoặc có thể truyền product cụ thể nếu cần xuất theo sản phẩm đã chọn.
     }
 
     private void loadInventoryFromApi() {
@@ -75,13 +99,11 @@ public class InventoryActivity extends AppCompatActivity {
                     productList.addAll(response.body());
                     setupAdapter();
                 } else {
-                    // Fallback demo nếu API lỗi hoặc dữ liệu rỗng
                     setupDemoDataAndAdapter();
                 }
             }
             @Override
             public void onFailure(@NonNull Call<List<Product>> call, @NonNull Throwable t) {
-                // Fallback demo nếu kết nối API lỗi
                 setupDemoDataAndAdapter();
             }
         });
@@ -96,16 +118,13 @@ public class InventoryActivity extends AppCompatActivity {
                 if (listItemView == null) {
                     listItemView = LayoutInflater.from(getContext()).inflate(R.layout.item_product_name, parent, false);
                 }
-
                 Product product = getItem(position);
-
                 if (product != null) {
                     TextView nameTextView = listItemView.findViewById(R.id.tvProductName);
                     if (nameTextView != null) {
                         nameTextView.setText(product.getProductName());
                     }
                 }
-
                 return listItemView;
             }
         };
