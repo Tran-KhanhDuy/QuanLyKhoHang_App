@@ -15,7 +15,6 @@ public class ProductInfoActivity extends AppCompatActivity {
             ((TextView) findViewById(R.id.tvProductId)).setText("ID: " + product.getId());
             ((TextView) findViewById(R.id.tvProductName)).setText(product.getProductName());
             ((TextView) findViewById(R.id.tvBarcode)).setText("Mã: " + product.getProductCode());
-            ((TextView) findViewById(R.id.tvPrice)).setText("Giá: " + product.getPrice());
             ((TextView) findViewById(R.id.tvQuantity)).setText("Số lượng: " + product.getQuantity());
             ((TextView) findViewById(R.id.tvLocation)).setText("Vị trí: " + product.getLocation());
             ((TextView) findViewById(R.id.tvUnit)).setText("Đơn vị: " + product.getProductUnit());

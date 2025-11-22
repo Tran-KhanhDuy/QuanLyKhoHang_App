@@ -109,14 +109,13 @@ public class ImportActivity extends AppCompatActivity {
         }
 
         try {
-            double price = Double.parseDouble(priceText);
             int quantity = Integer.parseInt(quantityText);
 
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());
             String now = sdf.format(new Date());
 
             Product newProduct = new Product(
-                    code, name, price, quantity, location, unit, desc, now, now
+                    code, name, quantity, location, unit, desc, now, now
             );
             addProductToApi(newProduct);
 

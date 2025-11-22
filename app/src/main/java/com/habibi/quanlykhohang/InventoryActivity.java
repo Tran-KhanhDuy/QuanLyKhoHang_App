@@ -133,8 +133,8 @@ public class InventoryActivity extends AppCompatActivity {
 
     private void setupDemoDataAndAdapter() {
         if (productList.isEmpty()) {
-            productList.add(new Product("123", "Sữa tươi", 25000.0, 10, "A1", "Hộp", "HSD 2026", "2025-11-01", "2025-11-14"));
-            productList.add(new Product("456", "Bút bi", 5000.0, 100, "B2", "Chiếc", "Bút Thiên Long", "2025-09-10", "2025-11-15"));
+//            productList.add(new Product("123", "Sữa tươi", 25000.0, 10, "A1", "Hộp", "HSD 2026", "2025-11-01", "2025-11-14"));
+//            productList.add(new Product("456", "Bút bi", 5000.0, 100, "B2", "Chiếc", "Bút Thiên Long", "2025-09-10", "2025-11-15"));
         }
         setupAdapter();
     }

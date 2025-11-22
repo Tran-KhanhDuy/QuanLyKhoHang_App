@@ -161,7 +161,6 @@ public class ExportActivity extends AppCompatActivity {
         selectedProduct = product;
         etBarcode.setText(product.getProductCode());
         etName.setText(product.getProductName(), false); // Không gợi ý lại nữa
-        etPrice.setText(String.valueOf(product.getPrice()));
         etQuantity.setText("");
         etLocation.setText(product.getLocation());
         etProductUnit.setText(product.getProductUnit());
@@ -242,7 +241,6 @@ public class ExportActivity extends AppCompatActivity {
                 Product updatedProduct = new Product(
                         selectedProduct.getProductCode(),
                         selectedProduct.getProductName(),
-                        selectedProduct.getPrice(),
                         newStockQuantity,
                         selectedProduct.getLocation(),
                         selectedProduct.getProductUnit(),
