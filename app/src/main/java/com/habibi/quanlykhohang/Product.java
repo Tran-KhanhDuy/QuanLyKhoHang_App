@@ -6,8 +6,7 @@ public class Product implements Serializable {
     private int id;
     private String productCode;              // Mã sản phẩm
     private String productName;              // Tên sản phẩm
-    private double price;
-    private int quantity;
+    private int Productquantity;
     private String location;
     private String productUnit;              // Đơn vị tính
     private String productDescription;
@@ -16,12 +15,11 @@ public class Product implements Serializable {
 
     public Product() {}
 
-    public Product(String productCode, String productName, double price, int quantity, String location, String productUnit, String productDescription,String createDate,
+    public Product(String productCode, String productName, int Productquantity, String location, String productUnit, String productDescription,String createDate,
                    String updateDate) {
         this.productCode = productCode;
         this.productName = productName;
-        this.price = price;
-        this.quantity = quantity;
+        this.Productquantity = Productquantity;
         this.location = location;
         this.productUnit = productUnit;
         this.productDescription = productDescription;
@@ -32,8 +30,7 @@ public class Product implements Serializable {
     public int getId() { return id; }
     public String getProductCode() { return productCode; }
     public String getProductName() { return productName; }
-    public double getPrice() { return price; }
-    public int getQuantity() { return quantity; }
+    public int getQuantity() { return Productquantity; }
     public String getLocation() { return location; }
     public String getProductUnit() { return productUnit; }
     public String getProductDescription() { return productDescription; }
@@ -41,8 +38,7 @@ public class Product implements Serializable {
     public void setId(int id) { this.id = id; }
     public void setProductCode(String productCode) { this.productCode = productCode; }
     public void setProductName(String productName) { this.productName = productName; }
-    public void setPrice(double price) { this.price = price; }
-    public void setQuantity(int quantity) { this.quantity = quantity; }
+    public void setQuantity(int Productquantity) { this.Productquantity = Productquantity; }
     public void setLocation(String location) { this.location = location; }
     public void setProductUnit(String productUnit) { this.productUnit = productUnit; }
     public void setProductDescription(String productDescription) { this.productDescription = productDescription; }
