@@ -21,13 +21,13 @@ public interface ProductApiService {
     Call<Product> getProductByBarcode(@Path("barcode") String barcode);
 
     @PUT("productsapi/{id}")
-    Call<Product> updateProduct(@Body Product product);
+    Call<Product> updateProduct(@Path("id") int id, @Body Product product);
 
     @DELETE("productsapi/{id}")
     Call<Void> deleteProduct(@Path("id") int id);
 
-    // THÊM API SEARCH THEO TÊN:
-    @GET("productsapi/search")
+    // API SEARCH THEO TÊN (SỬA LẠI ĐÚNG ENDPOINT)
+    @GET("productsapi")
     Call<List<Product>> searchProductsByName(@Query("name") String name);
 }
 

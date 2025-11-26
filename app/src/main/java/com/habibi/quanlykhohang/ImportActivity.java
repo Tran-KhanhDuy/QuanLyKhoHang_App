@@ -20,6 +20,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
+import com.google.gson.Gson;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 
@@ -27,7 +28,7 @@ public class ImportActivity extends AppCompatActivity {
     private Retrofit retrofit;
     private ProductApiService apiService;
 
-    private EditText etProductCode, etProductName, etPrice, etQuantity, etLocation, etProductUnit, etProductDescription;
+    private EditText etProductCode, etProductName, etQuantity, etLocation, etProductUnit, etProductDescription;
     private Button btnScan, btnSave;
     private TextView tvStatus, tvCreateDate, tvUpdateDate;
 
@@ -45,7 +46,6 @@ public class ImportActivity extends AppCompatActivity {
 
         etProductCode = findViewById(R.id.etBarcode);
         etProductName = findViewById(R.id.etName);
-        etPrice = findViewById(R.id.etPrice);
         etQuantity = findViewById(R.id.etQuantity);
         etLocation = findViewById(R.id.etLocation);
         etProductUnit = findViewById(R.id.etProductUnit);
@@ -95,32 +95,27 @@ public class ImportActivity extends AppCompatActivity {
     private void saveImport() {
         String code = etProductCode.getText().toString().trim();
         String name = etProductName.getText().toString().trim();
-        String priceText = etPrice.getText().toString().trim();
         String quantityText = etQuantity.getText().toString().trim();
         String location = etLocation.getText().toString().trim();
         String unit = etProductUnit.getText().toString().trim();
         String desc = etProductDescription.getText().toString().trim();
 
-        if (code.isEmpty() || name.isEmpty() || priceText.isEmpty() ||
-                quantityText.isEmpty() || location.isEmpty() ||
-                unit.isEmpty() || desc.isEmpty()) {
-            showAlert("Lỗi", "Vui lòng điền đầy đủ tất cả thông tin");
-            return;
-        }
 
         try {
-            int quantity = Integer.parseInt(quantityText);
+            int productQuantity = Integer.parseInt(quantityText);
 
-            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale.getDefault());
             String now = sdf.format(new Date());
 
+
             Product newProduct = new Product(
-                    code, name, quantity, location, unit, desc, now, now
+                    code, name, productQuantity, location, unit, desc, now, now
             );
+            Log.d("DEBUG_NEWPRODUCT", new Gson().toJson(newProduct));
             addProductToApi(newProduct);
 
         } catch (NumberFormatException e) {
-            showAlert("Lỗi", "Giá hoặc số lượng không hợp lệ");
+            showAlert("Lỗi", "Số lượng không hợp lệ");
         }
     }
 
@@ -157,7 +152,6 @@ public class ImportActivity extends AppCompatActivity {
     private void clearForm() {
         etProductCode.setText("");
         etProductName.setText("");
-        etPrice.setText("");
         etQuantity.setText("");
         etLocation.setText("");
         etProductUnit.setText("");

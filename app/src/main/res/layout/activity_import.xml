@@ -94,23 +94,6 @@
             android:padding="8dp"
             android:textColor="#000000" />
 
-        <!-- Giá -->
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="4dp"
-            android:text="Giá:"
-            android:textStyle="bold" />
-        <EditText
-            android:id="@+id/etPrice"
-            android:layout_width="match_parent"
-            android:layout_height="45dp"
-            android:layout_marginBottom="12dp"
-            android:hint="Nhập giá"
-            android:inputType="numberDecimal"
-            android:padding="8dp"
-            android:textColor="#000000" />
-
         <!-- Số lượng -->
         <TextView
             android:layout_width="match_parent"
@@ -161,24 +144,6 @@
             android:inputType="text"
             android:padding="8dp"
             android:textColor="#000000" />
-
-        <!-- Mô tả sản phẩm -->
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="4dp"
-            android:text="Mô Tả Sản Phẩm:"
-            android:textStyle="bold" />
-        <EditText
-            android:id="@+id/etProductDescription"
-            android:layout_width="match_parent"
-            android:layout_height="45dp"
-            android:layout_marginBottom="16dp"
-            android:hint="Nhập mô tả sản phẩm"
-            android:inputType="text"
-            android:padding="8dp"
-            android:textColor="#000000" />
-        <!-- ... Các trường phía trên không đổi ... -->
 
         <!-- Mô tả sản phẩm -->
         <TextView
