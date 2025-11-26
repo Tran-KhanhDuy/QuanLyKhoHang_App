@@ -123,25 +123,6 @@
 
 
         </LinearLayout>
-
-        <!-- Giá sản phẩm -->
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:layout_marginBottom="4dp"
-            android:text="Giá:"
-            android:textStyle="bold" />
-        <EditText
-            android:id="@+id/etPrice"
-            android:layout_width="match_parent"
-            android:layout_height="45dp"
-            android:layout_marginBottom="12dp"
-            android:hint="Nhập giá"
-            android:inputType="numberDecimal"
-            android:padding="8dp"
-            android:textColor="#000000" />
-
         <!-- Vị trí kho -->
         <TextView
             android:layout_width="match_parent"
