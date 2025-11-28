@@ -60,7 +60,7 @@ public class ExportActivity extends AppCompatActivity {
         setContentView(R.layout.activity_export);
 
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("https://gelatinously-commutative-jerrie.ngrok-free.dev/api/")
+                .baseUrl("http://dtuan244-001-site1.ntempurl.com/")
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
 

@@ -38,7 +38,7 @@ public class ImportActivity extends AppCompatActivity {
         setContentView(R.layout.activity_import);
 
         retrofit = new Retrofit.Builder()
-                .baseUrl("https://gelatinously-commutative-jerrie.ngrok-free.dev/api/") // Kết thúc bằng /
+                .baseUrl("http://dtuan244-001-site1.ntempurl.com/") // Kết thúc bằng /
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
 

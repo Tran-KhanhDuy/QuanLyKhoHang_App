@@ -23,7 +23,7 @@ public class MainActivity extends AppCompatActivity {
 
         // Khởi tạo Retrofit và API Service
         retrofit = new Retrofit.Builder()
-                .baseUrl("https://dtuan244-001-site1.ntempurl.com/")
+                .baseUrl("http://dtuan244-001-site1.ntempurl.com/")
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
 
