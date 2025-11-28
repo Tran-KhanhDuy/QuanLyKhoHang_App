@@ -47,7 +47,7 @@ public class InventoryActivity extends AppCompatActivity {
         lvInventory = findViewById(R.id.lvInventory);
 
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("https://gelatinously-commutative-jerrie.ngrok-free.dev/api/")
+                .baseUrl("http://dtuan244-001-site1.ntempurl.com/")
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
         apiService = retrofit.create(ProductApiService.class);
@@ -96,22 +96,33 @@ public class InventoryActivity extends AppCompatActivity {
     private void loadInventoryFromApi() {
         apiService.getAllProducts().enqueue(new Callback<List<Product>>() {
             @Override
-            public void onResponse(@NonNull Call<List<Product>> call, @NonNull Response<List<Product>> response) {
+            public void onResponse(@NonNull Call<List<Product>> call,
+                                   @NonNull Response<List<Product>> response) {
                 if (response.isSuccessful() && response.body() != null) {
                     productList.clear();
                     productList.addAll(response.body());
                     Log.d("DEBUG_PRODUCTS", new Gson().toJson(productList));
                     setupAdapter();
                 } else {
+                    Log.e("INV_API", "Error code: " + response.code());
+                    if (response.errorBody() != null) {
+                        try {
+                            Log.e("INV_API", "Body: " + response.errorBody().string());
+                        } catch (Exception ignored) {}
+                    }
                     setupDemoDataAndAdapter();
                 }
             }
+
             @Override
-            public void onFailure(@NonNull Call<List<Product>> call, @NonNull Throwable t) {
+            public void onFailure(@NonNull Call<List<Product>> call,
+                                  @NonNull Throwable t) {
+                Log.e("INV_API", "Failure: " + t.getMessage(), t);
                 setupDemoDataAndAdapter();
             }
         });
     }
+
 
     private void setupAdapter() {
         ArrayAdapter<Product> adapter = new ArrayAdapter<Product>(this, 0, productList) {
