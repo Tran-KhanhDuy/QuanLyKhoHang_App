@@ -11,23 +11,23 @@ import java.util.List;
 import retrofit2.http.Query;
 
 public interface ProductApiService {
-    @POST("productsapi")
+    @POST("api/productsapi")
     Call<Product> addProduct(@Body Product product);
 
-    @GET("productsapi")
+    @GET("api/productsapi")
     Call<List<Product>> getAllProducts();
 
-    @GET("productsapi/{barcode}")
+    @GET("api/productsapi/{barcode}")
     Call<Product> getProductByBarcode(@Path("barcode") String barcode);
 
-    @PUT("productsapi/{id}")
+    @PUT("api/productsapi/{id}")
     Call<Product> updateProduct(@Path("id") int id, @Body Product product);
 
-    @DELETE("productsapi/{id}")
+    @DELETE("api/productsapi/{id}")
     Call<Void> deleteProduct(@Path("id") int id);
 
     // API SEARCH THEO TÊN (SỬA LẠI ĐÚNG ENDPOINT)
-    @GET("productsapi")
+    @GET("api/productsapi")
     Call<List<Product>> searchProductsByName(@Query("name") String name);
 }
 
