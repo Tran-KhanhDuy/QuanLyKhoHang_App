@@ -12,23 +12,26 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class MainActivity extends AppCompatActivity {
 
     private Button btnImport, btnExport, btnInventory;
-    private Retrofit retrofit;
     public static ProductApiService api;
 
     //alo
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        TokenManager tokenManager = new TokenManager(this);
+
+        // Kiểm tra: Nếu không có token -> Về trang Login
+        if (tokenManager.getToken() == null) {
+            Intent intent = new Intent(this, LoginActivity.class);
+            startActivity(intent);
+            finish();
+            return;
+        }
+
         setContentView(R.layout.activity_main);
-
         // Khởi tạo Retrofit và API Service
-        retrofit = new Retrofit.Builder()
-                .baseUrl("http://dtuan244-001-site1.ntempurl.com/")
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
+        api = RetrofitClient.getService(this);
 
-        // Singleton cho toàn app dùng chung hoặc truyền vào Activity khác
-        api = retrofit.create(ProductApiService.class);
 
         LinearLayout btnImport = findViewById(R.id.btnImportLayout);
         btnImport.setOnClickListener(v ->{

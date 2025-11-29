@@ -11,6 +11,8 @@ import java.util.List;
 import retrofit2.http.Query;
 
 public interface ProductApiService {
+    @POST("auth/login")
+    Call<LoginResponse> login(@Body LoginRequest request);
     @POST("api/productsapi")
     Call<Product> addProduct(@Body Product product);
 

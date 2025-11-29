@@ -37,10 +37,7 @@ public class ImportActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_import);
 
-        retrofit = new Retrofit.Builder()
-                .baseUrl("http://dtuan244-001-site1.ntempurl.com/") // Kết thúc bằng /
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
+        apiService = RetrofitClient.getService(this);
 
         apiService = retrofit.create(ProductApiService.class);
 

@@ -59,12 +59,7 @@ public class ExportActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_export);
 
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("http://dtuan244-001-site1.ntempurl.com/")
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
-
-        apiService = retrofit.create(ProductApiService.class);
+        apiService = RetrofitClient.getService(this);
 
         etBarcode = findViewById(R.id.etBarcode);
         etName = findViewById(R.id.etName);
