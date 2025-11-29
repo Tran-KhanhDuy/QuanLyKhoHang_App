@@ -31,5 +31,7 @@ public interface ProductApiService {
     // API SEARCH THEO TÊN (SỬA LẠI ĐÚNG ENDPOINT)
     @GET("api/productsapi")
     Call<List<Product>> searchProductsByName(@Query("name") String name);
+    @POST("api/WarehouseTransactionApi")
+    Call<Object> addTransaction(@Body WarehouseTransaction transaction);
 }
 
