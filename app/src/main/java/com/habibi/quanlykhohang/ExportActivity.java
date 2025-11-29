@@ -346,6 +346,7 @@ public class ExportActivity extends AppCompatActivity {
             @Override
             public void onFailure(Call<Object> call, Throwable t) {
                 Log.e("HISTORY", "Lỗi lưu lịch sử: " + t.getMessage());
+                Log.e("HISTORY", "Lỗi kết nối: " + t.getMessage());
             }
         });
     }
