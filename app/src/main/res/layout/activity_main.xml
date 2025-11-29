@@ -17,23 +17,22 @@
         android:layout_marginBottom="32dp"
         android:layout_marginTop="16dp"/>
 
-    <!-- Nút Import là icon + chữ dưới dạng LinearLayout con -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="16dp"
         android:gravity="center"
         android:orientation="horizontal">
 
-        <!-- Nút Import: icon + chữ dọc -->
         <LinearLayout
             android:id="@+id/btnImportLayout"
-            android:layout_width="130dp"
+            android:layout_width="0dp"
+            android:layout_weight="1"
             android:layout_height="wrap_content"
             android:clickable="true"
             android:focusable="true"
             android:gravity="center"
             android:orientation="vertical"
+            android:background="?attr/selectableItemBackground"
             android:padding="8dp">
 
             <ImageView
@@ -57,13 +56,14 @@
 
         <LinearLayout
             android:id="@+id/btnExportLayout"
-            android:layout_width="130dp"
+            android:layout_width="0dp"
+            android:layout_weight="1"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="12dp"
             android:clickable="true"
             android:focusable="true"
             android:gravity="center"
             android:orientation="vertical"
+            android:background="?attr/selectableItemBackground"
             android:padding="8dp">
 
             <ImageView
@@ -84,22 +84,24 @@
                 android:textSize="13sp"
                 android:textStyle="bold" />
         </LinearLayout>
-        <!-- Nút Inventory -->
+
         <LinearLayout
             android:id="@+id/btnInventoryLayout"
-            android:layout_width="130dp"
+            android:layout_width="0dp"
+            android:layout_weight="1"
             android:layout_height="wrap_content"
             android:clickable="true"
             android:focusable="true"
             android:gravity="center"
             android:orientation="vertical"
+            android:background="?attr/selectableItemBackground"
             android:padding="8dp">
 
             <ImageView
                 android:id="@+id/imgInventory"
-                android:layout_width="80dp"
-                android:layout_height="80dp"
-                android:contentDescription="Danh Sách Tồn Kho"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:contentDescription="Tồn Kho"
                 android:src="@drawable/ic_inventory" />
 
             <TextView
@@ -108,10 +110,27 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
                 android:gravity="center"
-                android:text="Danh Sách Tồn Kho"
+                android:text="Tồn Kho"
                 android:textColor="#2196F3"
                 android:textSize="13sp"
                 android:textStyle="bold" />
         </LinearLayout>
     </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1" />
+
+    <Button
+        android:id="@+id/btnLogout"
+        android:layout_width="wrap_content"
+        android:layout_height="60dp"
+        android:layout_marginTop="16dp"
+        android:backgroundTint="#F44336"
+        android:text="ĐĂNG XUẤT"
+        android:textColor="#FFFFFF"
+        android:textSize="16sp"
+        android:textStyle="bold" />
+
 </LinearLayout>

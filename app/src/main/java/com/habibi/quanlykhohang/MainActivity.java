@@ -53,5 +53,22 @@ public class MainActivity extends AppCompatActivity {
             Intent intent = new Intent(MainActivity.this, InventoryActivity.class);
             startActivity(intent);
         });
+        Button btnLogout = findViewById(R.id.btnLogout); // Tìm nút id btnLogout trong XML
+        btnLogout.setOnClickListener(v -> {
+            // A. Xóa Token trong máy
+            tokenManager.clearInfo();
+
+            // B. Chuyển về màn hình Login
+            Intent intent = new Intent(MainActivity.this, LoginActivity.class);
+
+            // C. Xóa lịch sử (Back Stack) để người dùng không bấm Back quay lại được
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+
+            startActivity(intent);
+            finish();
+
+            Toast.makeText(MainActivity.this, "Đã đăng xuất thành công!", Toast.LENGTH_SHORT).show();
+        });
+
     }
 }

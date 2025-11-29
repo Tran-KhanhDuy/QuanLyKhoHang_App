@@ -9,7 +9,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class RetrofitClient {
 
     // Đây là địa chỉ Server thật của bạn (đã publish)
-    private static final String BASE_URL = "http://dtuan244-001-site1.ntempurl.com/api/";
+    private static final String BASE_URL = "http://dtuan244-001-site1.ntempurl.com/";
 
     private static Retrofit retrofit = null;
 

@@ -39,8 +39,6 @@ public class ImportActivity extends AppCompatActivity {
 
         apiService = RetrofitClient.getService(this);
 
-        apiService = retrofit.create(ProductApiService.class);
-
         etProductCode = findViewById(R.id.etBarcode);
         etProductName = findViewById(R.id.etName);
         etQuantity = findViewById(R.id.etQuantity);

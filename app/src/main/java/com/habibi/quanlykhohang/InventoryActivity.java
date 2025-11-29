@@ -94,6 +94,8 @@ public class InventoryActivity extends AppCompatActivity {
             @Override
             public void onResponse(@NonNull Call<List<Product>> call,
                                    @NonNull Response<List<Product>> response) {
+
+                Log.e("CHECK_LOI", "Mã phản hồi từ Server: " + response.code());
                 if (response.isSuccessful() && response.body() != null) {
                     productList.clear();
                     productList.addAll(response.body());
