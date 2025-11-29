@@ -12,23 +12,26 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class MainActivity extends AppCompatActivity {
 
     private Button btnImport, btnExport, btnInventory;
-    private Retrofit retrofit;
     public static ProductApiService api;
 
     //alo
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        TokenManager tokenManager = new TokenManager(this);
+
+        // Kiểm tra: Nếu không có token -> Về trang Login
+        if (tokenManager.getToken() == null) {
+            Intent intent = new Intent(this, LoginActivity.class);
+            startActivity(intent);
+            finish();
+            return;
+        }
+
         setContentView(R.layout.activity_main);
-
         // Khởi tạo Retrofit và API Service
-        retrofit = new Retrofit.Builder()
-                .baseUrl("http://dtuan244-001-site1.ntempurl.com/")
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
+        api = RetrofitClient.getService(this);
 
-        // Singleton cho toàn app dùng chung hoặc truyền vào Activity khác
-        api = retrofit.create(ProductApiService.class);
 
         LinearLayout btnImport = findViewById(R.id.btnImportLayout);
         btnImport.setOnClickListener(v ->{
@@ -50,5 +53,22 @@ public class MainActivity extends AppCompatActivity {
             Intent intent = new Intent(MainActivity.this, InventoryActivity.class);
             startActivity(intent);
         });
+        Button btnLogout = findViewById(R.id.btnLogout); // Tìm nút id btnLogout trong XML
+        btnLogout.setOnClickListener(v -> {
+            // A. Xóa Token trong máy
+            tokenManager.clearInfo();
+
+            // B. Chuyển về màn hình Login
+            Intent intent = new Intent(MainActivity.this, LoginActivity.class);
+
+            // C. Xóa lịch sử (Back Stack) để người dùng không bấm Back quay lại được
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+
+            startActivity(intent);
+            finish();
+
+            Toast.makeText(MainActivity.this, "Đã đăng xuất thành công!", Toast.LENGTH_SHORT).show();
+        });
+
     }
 }

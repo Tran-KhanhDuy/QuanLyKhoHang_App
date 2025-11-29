@@ -46,11 +46,7 @@ public class InventoryActivity extends AppCompatActivity {
 
         lvInventory = findViewById(R.id.lvInventory);
 
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("http://dtuan244-001-site1.ntempurl.com/")
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
-        apiService = retrofit.create(ProductApiService.class);
+        apiService = RetrofitClient.getService(this);
 
         // Đăng ký launcher để xử lý khi ExportActivity trả về kết quả
         exportLauncher = registerForActivityResult(
@@ -98,6 +94,8 @@ public class InventoryActivity extends AppCompatActivity {
             @Override
             public void onResponse(@NonNull Call<List<Product>> call,
                                    @NonNull Response<List<Product>> response) {
+
+                Log.e("CHECK_LOI", "Mã phản hồi từ Server: " + response.code());
                 if (response.isSuccessful() && response.body() != null) {
                     productList.clear();
                     productList.addAll(response.body());
