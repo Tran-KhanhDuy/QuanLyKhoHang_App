@@ -29,6 +29,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import io.realm.Realm;
 
 public class ExportActivity extends AppCompatActivity {
     private ProductApiService apiService;
@@ -116,10 +117,12 @@ public class ExportActivity extends AppCompatActivity {
             }
 
             @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
 
             @Override
-            public void afterTextChanged(Editable s) {}
+            public void afterTextChanged(Editable s) {
+            }
         });
 
         etName.setOnItemClickListener((parent, view, position, id) -> {
@@ -174,23 +177,35 @@ public class ExportActivity extends AppCompatActivity {
     }
 
     private void fetchProductByBarcode(String barcode) {
-        Call<Product> call = apiService.getProductByBarcode(barcode);
+        if (barcode == null || barcode.trim().isEmpty()) {
+            clearInfo();
+            etName.setText(getString(R.string.no_product_data));
+            return;
+        }
+
+        Call<Product> call = apiService.getProductByBarcode(barcode.trim());
         call.enqueue(new Callback<Product>() {
             @Override
-            public void onResponse(@NonNull Call<Product> call, @NonNull Response<Product> response) {
+            public void onResponse(@NonNull Call<Product> call,
+                                   @NonNull Response<Product> response) {
+
                 if (response.isSuccessful() && response.body() != null) {
                     fillProductInfo(response.body());
                 } else {
-                    etName.setText(getString(R.string.no_product_data));
                     clearInfo();
+                    etName.setText(getString(R.string.no_product_data));
                 }
             }
+
             @Override
-            public void onFailure(@NonNull Call<Product> call, @NonNull Throwable t) {
+            public void onFailure(@NonNull Call<Product> call,
+                                  @NonNull Throwable t) {
+                clearInfo();
                 etName.setText(getString(R.string.network_error));
             }
         });
     }
+
 
     private void scanBarcode() {
         IntentIntegrator integrator = new IntentIntegrator(this);
@@ -261,7 +276,7 @@ public class ExportActivity extends AppCompatActivity {
                 call.enqueue(new Callback<Void>() {
                     @Override
                     public void onResponse(Call<Void> call, Response<Void> response) {
-                        if(response.isSuccessful()){
+                        if (response.isSuccessful()) {
                             // --- SỬA 2: GHI LỊCH SỬ KHI XÓA ---
                             recordTransaction(selectedProduct.getId(), quantityToExport);
                             // ----------------------------------
@@ -276,7 +291,8 @@ public class ExportActivity extends AppCompatActivity {
                             if (response.errorBody() != null) {
                                 try {
                                     errorMsg += "\nLý do: " + response.errorBody().string();
-                                } catch (IOException e) { }
+                                } catch (IOException e) {
+                                }
                             }
                             showAlert("Lỗi", errorMsg);
                         }
@@ -317,11 +333,13 @@ public class ExportActivity extends AppCompatActivity {
                         try {
                             String serverError = response.errorBody().string();
                             errorMsg += "\nLý do: " + serverError;
-                        } catch (IOException e) { }
+                        } catch (IOException e) {
+                        }
                     }
                     showAlert("Lỗi Cập Nhật", errorMsg);
                 }
             }
+
             @Override
             public void onFailure(Call<Product> call, Throwable t) {
                 showAlert("Lỗi Mạng/API", t.getMessage());
@@ -343,6 +361,7 @@ public class ExportActivity extends AppCompatActivity {
             public void onResponse(Call<Object> call, Response<Object> response) {
                 Log.d("HISTORY", "Đã lưu lịch sử xuất kho");
             }
+
             @Override
             public void onFailure(Call<Object> call, Throwable t) {
                 Log.e("HISTORY", "Lỗi lưu lịch sử: " + t.getMessage());
