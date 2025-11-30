@@ -4,6 +4,7 @@ import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
@@ -23,9 +24,9 @@ import com.google.gson.Gson;
 import java.util.ArrayList;
 import java.util.List;
 
+
 // Retrofit
-import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
+
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -38,6 +39,31 @@ public class InventoryActivity extends AppCompatActivity {
 
     // Khai báo launcher để xử lý kết quả trả về sau khi xuất/xóa sản phẩm
     private ActivityResultLauncher<Intent> exportLauncher;
+
+    private void sortByName() {
+        productList.sort((p1, p2) ->
+                p1.getProductName().compareToIgnoreCase(p2.getProductName()));
+        setupAdapter();
+    }
+
+    private void sortByQuantityDes() {
+        productList.sort((p1, p2) ->
+                Integer.compare(p2.getProductQuantity(), p1.getProductQuantity()));
+        setupAdapter();
+    }
+
+
+    private  void sortByLocation(){
+        productList.sort((p1, p2) ->
+                p1.getLocation().compareToIgnoreCase(p2.getLocation()));
+        setupAdapter();
+    }
+
+    private void sortByUpdateDateDesc() {
+        productList.sort((p1, p2) ->
+                p2.getUpdateDate().compareToIgnoreCase(p1.getUpdateDate()));
+        setupAdapter();
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -78,6 +104,16 @@ public class InventoryActivity extends AppCompatActivity {
             Intent intent = new Intent(InventoryActivity.this, ImportActivity.class);
             startActivity(intent);
         });
+        // Nút xuất hàng
+        Button btnDel = findViewById(R.id.btnDel);
+        btnDel.setOnClickListener(v -> {
+            Intent intent = new Intent(InventoryActivity.this, ExportActivity.class);
+            exportLauncher.launch(intent); // thay vì startActivity
+        });
+
+        ImageButton btnMenu = findViewById(R.id.btnMenu);
+        btnMenu.setOnClickListener(v -> showSortDialog());
+
 
         // Ví dụ: nếu có nút xuất kho ở giao diện này,
         // hoặc nếu muốn mở ExportActivity từ đây:
@@ -151,4 +187,27 @@ public class InventoryActivity extends AppCompatActivity {
         }
         setupAdapter();
     }
+
+    private void showSortDialog() {
+        String[] options = {
+                "Tên (A-Z)",
+                "Số lượng tăng dần",
+                "Khu (A1, A2...)",
+                "Ngày cập nhật mới nhất"
+        };
+
+        new AlertDialog.Builder(this)
+                .setTitle("Sắp xếp theo")
+                .setItems(options, (dialog, which) -> {
+                    switch (which) {
+                        case 0: sortByName(); break;
+                        case 1: sortByQuantityDes(); break;
+                        case 2: sortByLocation(); break;
+                        case 3: sortByUpdateDateDesc(); break;
+                    }
+                })
+                .show();
+    }
+
+
 }
