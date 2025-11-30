@@ -45,16 +45,14 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="4dp"
-            android:text="Mã Vạch:"
+            android:text="Mã Sản Phẩm:"
             android:textStyle="bold" />
-
         <EditText
             android:id="@+id/etBarcode"
             android:layout_width="match_parent"
             android:layout_height="45dp"
             android:layout_marginBottom="12dp"
-            android:enabled="false"
-            android:hint="Quét mã vạch"
+            android:hint="Nhập hoặc quét mã vạch"
             android:inputType="text"
             android:padding="8dp"
             android:textColor="#000000" />

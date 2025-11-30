@@ -19,7 +19,8 @@ public interface ProductApiService {
     @GET("api/productsapi")
     Call<List<Product>> getAllProducts();
 
-    @GET("api/productsapi/{barcode}")
+    // Ví dụ 1: /api/productsapi/GetByBarcode?barcode=xxx
+    @GET("api/ProductsApi/barcode/{barcode}")
     Call<Product> getProductByBarcode(@Path("barcode") String barcode);
 
     @PUT("api/productsapi/{id}")
@@ -29,8 +30,9 @@ public interface ProductApiService {
     Call<Void> deleteProduct(@Path("id") int id);
 
     // API SEARCH THEO TÊN (SỬA LẠI ĐÚNG ENDPOINT)
-    @GET("api/productsapi")
+    @GET("api/ProductsApi/search")
     Call<List<Product>> searchProductsByName(@Query("name") String name);
+
     @POST("api/WarehouseTransactionApi")
     Call<Object> addTransaction(@Body WarehouseTransaction transaction);
     @GET("api/SupplierApi")
