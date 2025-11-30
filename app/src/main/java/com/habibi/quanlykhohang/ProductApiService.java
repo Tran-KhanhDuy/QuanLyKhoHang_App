@@ -33,5 +33,7 @@ public interface ProductApiService {
     Call<List<Product>> searchProductsByName(@Query("name") String name);
     @POST("api/WarehouseTransactionApi")
     Call<Object> addTransaction(@Body WarehouseTransaction transaction);
+    @GET("api/SupplierApi")
+    Call<List<Supplier>> getSuppliers();
 }
 

@@ -19,7 +19,11 @@ public class WarehouseTransaction {
 
     @SerializedName("notes")
     private String notes;
-
+    @SerializedName("supplierId")
+    private Integer supplierId;
+    public void setSupplierId(Integer supplierId) {
+        this.supplierId = supplierId;
+    }
     public WarehouseTransaction(int productId, int quantity, String transactionType, String notes) {
         this.productId = productId;
         this.quantity = quantity;

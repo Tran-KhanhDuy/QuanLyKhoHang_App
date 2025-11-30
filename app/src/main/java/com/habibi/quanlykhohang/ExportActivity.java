@@ -82,11 +82,21 @@ public class ExportActivity extends AppCompatActivity {
         etName.addTextChangedListener(new TextWatcher() {
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
+                // --- [SỬA LỖI LOGIC TẠI ĐÂY] ---
+                // Nếu người dùng thay đổi text, và text đó KHÁC với tên sản phẩm đang chọn
+                // Thì reset selectedProduct về null và xóa các ô thông tin khác
+                if (selectedProduct != null && !s.toString().equals(selectedProduct.getProductName())) {
+                    selectedProduct = null;
+                    clearDependentFields(); // Hàm mới để xóa thông tin phụ (Barcode, Tồn kho...)
+                }
+                // -------------------------------
+
                 if (searchCall != null) {
                     searchCall.cancel();
                 }
 
                 if (s.length() > 0) {
+                    // Logic tìm kiếm giữ nguyên
                     searchCall = apiService.searchProductsByName(s.toString());
                     searchCall.enqueue(new Callback<List<Product>>() {
                         @Override
@@ -112,6 +122,10 @@ public class ExportActivity extends AppCompatActivity {
                             }
                         }
                     });
+                } else {
+                    // Nếu xóa hết chữ thì clear luôn list gợi ý
+                    nameAdapter.clear();
+                    nameAdapter.notifyDataSetChanged();
                 }
             }
 
@@ -341,12 +355,25 @@ public class ExportActivity extends AppCompatActivity {
         apiService.addTransaction(transaction).enqueue(new Callback<Object>() {
             @Override
             public void onResponse(Call<Object> call, Response<Object> response) {
-                Log.d("HISTORY", "Đã lưu lịch sử xuất kho");
+                if (response.isSuccessful()) {
+                    Log.d("HISTORY", "Đã lưu lịch sử xuất kho");
+                }
+                // Trường hợp 2: Server trả lỗi (400, 404, 500...) -> ĐỌC LỖI Ở ĐÂY
+                else {
+                    try {
+                        // Đọc nội dung lỗi chi tiết từ Server
+                        String loiChiTiet = response.errorBody().string();
+                        Log.e("HISTORY_ERROR", "Lỗi Server (Code " + response.code() + "): " + loiChiTiet);
+                    } catch (Exception e) {
+                        Log.e("HISTORY_ERROR", "Không đọc được lỗi chi tiết");
+                    }
+                }
             }
             @Override
             public void onFailure(Call<Object> call, Throwable t) {
                 Log.e("HISTORY", "Lỗi lưu lịch sử: " + t.getMessage());
                 Log.e("HISTORY", "Lỗi kết nối: " + t.getMessage());
+
             }
         });
     }
@@ -367,7 +394,16 @@ public class ExportActivity extends AppCompatActivity {
         tvCreateDate.setText("Ngày tạo: ");
         tvUpdateDate.setText("Ngày cập nhật: ");
     }
-
+    private void clearDependentFields() {
+        etBarcode.setText("");
+        etQuantity.setText("");
+        etLocation.setText("");
+        etProductUnit.setText("");
+        etProductDescription.setText("");
+        tvCurrentStock.setText("Tồn kho: -");
+        tvCreateDate.setText("Ngày tạo: ");
+        tvUpdateDate.setText("Ngày cập nhật: ");
+    }
     private void showAlert(String title, String message, Runnable onOK) {
         new AlertDialog.Builder(this)
                 .setTitle(title)
