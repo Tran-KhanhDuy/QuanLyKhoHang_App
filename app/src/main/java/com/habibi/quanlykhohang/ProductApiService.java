@@ -35,5 +35,7 @@ public interface ProductApiService {
 
     @POST("api/WarehouseTransactionApi")
     Call<Object> addTransaction(@Body WarehouseTransaction transaction);
+    @GET("api/SupplierApi")
+    Call<List<Supplier>> getSuppliers();
 }
 
