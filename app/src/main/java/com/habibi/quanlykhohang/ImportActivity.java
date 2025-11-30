@@ -115,21 +115,50 @@ public class ImportActivity extends AppCompatActivity {
     }
 
     private void addProductToApi(Product newProduct) {
-        Call<Product> call = apiService.addProduct(newProduct);
-        call.enqueue(new Callback<Product>() {
+        // 1. Gọi API thêm sản phẩm
+        apiService.addProduct(newProduct).enqueue(new Callback<Product>() {
             @Override
             public void onResponse(Call<Product> call, Response<Product> response) {
-                if (response.isSuccessful()) {
-                    showAlert("Thành công", "Thêm sản phẩm mới thành công!", () -> {
+                // Kiểm tra xem server có trả về dữ liệu sản phẩm (kèm ID) không
+                if (response.isSuccessful() && response.body() != null) {
+                    Product savedProduct = response.body(); // Sản phẩm đã được Server lưu và trả về (có ID)
+
+                    // --- BẮT ĐẦU ĐOẠN CODE GHI LỊCH SỬ ---
+
+                    // Tạo đối tượng lịch sử để gửi đi
+                    // (Lưu ý: Username và Date server sẽ tự điền dựa vào Token, ta chỉ cần gửi thông tin cơ bản)
+                    WarehouseTransaction transaction = new WarehouseTransaction(
+                            savedProduct.getId(),               // Lấy ID thật từ Server
+                            savedProduct.getProductQuantity(),  // Số lượng vừa nhập
+                            "Import",                           // Loại giao dịch
+                            "Nhập hàng từ App Mobile"           // Ghi chú
+                    );
+
+                    // Gọi API ghi lịch sử (Chạy ngầm, không cần chờ kết quả để hiển thị thông báo)
+                    apiService.addTransaction(transaction).enqueue(new Callback<Object>() {
+                        @Override
+                        public void onResponse(Call<Object> call, Response<Object> response) {
+                            Log.d("HISTORY_LOG", "Đã lưu lịch sử nhập kho. Code: " + response.code());
+                        }
+
+                        @Override
+                        public void onFailure(Call<Object> call, Throwable t) {
+                            Log.e("HISTORY_LOG", "Lỗi lưu lịch sử: " + t.getMessage());
+                        }
+                    });
+                    // --- KẾT THÚC ĐOẠN GHI LỊCH SỬ ---
+
+                    // Hiển thị thông báo thành công cho người dùng
+                    showAlert("Thành công", "Thêm sản phẩm mới và ghi lịch sử thành công!", () -> {
                         clearForm();
                     });
+
                 } else {
-                    String errorMsg = "Không thể thêm sản phẩm qua API (mã lỗi " + response.code() + ")";
+                    // Xử lý lỗi nếu server từ chối
+                    String errorMsg = "Lỗi thêm sản phẩm (Mã: " + response.code() + ")";
                     if (response.errorBody() != null) {
                         try {
-                            String detailedError = response.errorBody().string();
-                            errorMsg += "\nChi tiết: " + detailedError;
-                            Log.e("API_ERROR", detailedError);
+                            errorMsg += "\nChi tiết: " + response.errorBody().string();
                         } catch (IOException e) {
                             e.printStackTrace();
                         }
@@ -137,9 +166,10 @@ public class ImportActivity extends AppCompatActivity {
                     showAlert("Lỗi", errorMsg);
                 }
             }
+
             @Override
             public void onFailure(Call<Product> call, Throwable t) {
-                showAlert("Lỗi mạng/API", t.getMessage());
+                showAlert("Lỗi kết nối", t.getMessage());
             }
         });
     }

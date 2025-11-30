@@ -17,13 +17,10 @@ import android.widget.TextView;
 import android.text.Editable;
 import android.text.TextWatcher;
 
-import com.google.gson.Gson;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 
 import java.io.IOException;
-import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -41,7 +38,7 @@ public class ExportActivity extends AppCompatActivity {
     private ArrayAdapter<String> nameAdapter;
     private List<Product> suggestedProducts = new ArrayList<>();
     private Product selectedProduct;
-    private Call<List<Product>> searchCall; // FIX: To manage search requests
+    private Call<List<Product>> searchCall;
 
     private final ActivityResultLauncher<Intent> barcodeLauncher = registerForActivityResult(
             new ActivityResultContracts.StartActivityForResult(),
@@ -59,7 +56,9 @@ public class ExportActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_export);
 
+        // --- SỬA 1: Dùng Client chung để có Token ---
         apiService = RetrofitClient.getService(this);
+        // --------------------------------------------
 
         etBarcode = findViewById(R.id.etBarcode);
         etName = findViewById(R.id.etName);
@@ -83,13 +82,11 @@ public class ExportActivity extends AppCompatActivity {
         etName.addTextChangedListener(new TextWatcher() {
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                // FIX: Cancel any previous, ongoing search request.
                 if (searchCall != null) {
                     searchCall.cancel();
                 }
 
                 if (s.length() > 0) {
-                    // FIX: Store the new request so it can be cancelled later.
                     searchCall = apiService.searchProductsByName(s.toString());
                     searchCall.enqueue(new Callback<List<Product>>() {
                         @Override
@@ -110,10 +107,7 @@ public class ExportActivity extends AppCompatActivity {
 
                         @Override
                         public void onFailure(Call<List<Product>> call, Throwable t) {
-                            // FIX: If the request was cancelled by us, it's not an error.
-                            if (call.isCanceled()) {
-                                Log.d("SearchByName", "Search request was cancelled.");
-                            } else {
+                            if (!call.isCanceled()) {
                                 Log.e("SearchByName", "API call failed: ", t);
                             }
                         }
@@ -215,9 +209,7 @@ public class ExportActivity extends AppCompatActivity {
         String unit = etProductUnit.getText().toString().trim();
         String desc = etProductDescription.getText().toString().trim();
 
-        if (barcode.isEmpty() || name.isEmpty()
-                || quantityText.isEmpty() || location.isEmpty()
-                || unit.isEmpty() || desc.isEmpty()) {
+        if (barcode.isEmpty() || name.isEmpty() || quantityText.isEmpty() || location.isEmpty() || unit.isEmpty() || desc.isEmpty()) {
             showAlert("Lỗi", "Vui lòng điền đầy đủ tất cả thông tin!");
             return;
         }
@@ -240,9 +232,8 @@ public class ExportActivity extends AppCompatActivity {
                 return;
             }
 
-            // note (lỗi)
+            // Trường hợp 1: Xuất một phần (Update)
             if (quantityToExport < selectedProduct.getProductQuantity()) {
-
                 int newStockQuantity = selectedProduct.getProductQuantity() - quantityToExport;
                 String updateDate = getCurrentDateTimeString();
 
@@ -257,11 +248,13 @@ public class ExportActivity extends AppCompatActivity {
                         updateDate
                 );
                 updatedProduct.setId(selectedProduct.getId());
-                exportProductToApi(selectedProduct.getId(), updatedProduct);
+
+                // Truyền thêm quantityToExport để ghi lịch sử
+                exportProductToApi(selectedProduct.getId(), updatedProduct, quantityToExport);
                 return;
             }
 
-            // Trường hợp xuất đủ số lượng
+            // Trường hợp 2: Xuất hết (Delete)
             if (quantityToExport == selectedProduct.getProductQuantity()) {
                 Call<Void> call = apiService.deleteProduct(selectedProduct.getId());
 
@@ -269,14 +262,18 @@ public class ExportActivity extends AppCompatActivity {
                     @Override
                     public void onResponse(Call<Void> call, Response<Void> response) {
                         if(response.isSuccessful()){
+                            // --- SỬA 2: GHI LỊCH SỬ KHI XÓA ---
+                            recordTransaction(selectedProduct.getId(), quantityToExport);
+                            // ----------------------------------
+
                             showAlert("Thành công", "Đã xuất hết sản phẩm!\nSản phẩm đã bị xóa khỏi kho.", () -> {
                                 Intent resultIntent = new Intent();
                                 setResult(RESULT_OK, resultIntent);
                                 finish();
                             });
-                        }else {
+                        } else {
                             String errorMsg = "Không thể xóa sản phẩm qua API (error " + response.code() + ")";
-                             if (response.errorBody() != null) {
+                            if (response.errorBody() != null) {
                                 try {
                                     errorMsg += "\nLý do: " + response.errorBody().string();
                                 } catch (IOException e) { }
@@ -297,12 +294,18 @@ public class ExportActivity extends AppCompatActivity {
         }
     }
 
-    private void exportProductToApi(int id, Product updatedProduct) {
+    // Đã thêm tham số quantityExported để ghi log
+    private void exportProductToApi(int id, Product updatedProduct, int quantityExported) {
         Call<Product> call = apiService.updateProduct(id, updatedProduct);
         call.enqueue(new Callback<Product>() {
             @Override
             public void onResponse(Call<Product> call, Response<Product> response) {
                 if (response.isSuccessful()) {
+
+                    // --- SỬA 3: GHI LỊCH SỬ KHI UPDATE ---
+                    recordTransaction(id, quantityExported);
+                    // -------------------------------------
+
                     showAlert("Thành công", "Xuất kho thành công!", () -> {
                         Intent resultIntent = new Intent();
                         setResult(RESULT_OK, resultIntent);
@@ -312,13 +315,9 @@ public class ExportActivity extends AppCompatActivity {
                     String errorMsg = "Không thể cập nhật sản phẩm (mã lỗi: " + response.code() + ")";
                     if (response.errorBody() != null) {
                         try {
-                            // Show the detailed error from the server
                             String serverError = response.errorBody().string();
                             errorMsg += "\nLý do: " + serverError;
-                            Log.e("API_UPDATE_ERROR", serverError);
-                        } catch (IOException e) {
-                            Log.e("API_UPDATE_ERROR", "Error reading error body", e);
-                        }
+                        } catch (IOException e) { }
                     }
                     showAlert("Lỗi Cập Nhật", errorMsg);
                 }
@@ -326,6 +325,28 @@ public class ExportActivity extends AppCompatActivity {
             @Override
             public void onFailure(Call<Product> call, Throwable t) {
                 showAlert("Lỗi Mạng/API", t.getMessage());
+            }
+        });
+    }
+
+    // Hàm phụ để gọi API ghi lịch sử (Code gọn hơn)
+    private void recordTransaction(int productId, int quantity) {
+        WarehouseTransaction transaction = new WarehouseTransaction(
+                productId,
+                quantity,
+                "Export",
+                "Xuất hàng từ App Mobile"
+        );
+
+        apiService.addTransaction(transaction).enqueue(new Callback<Object>() {
+            @Override
+            public void onResponse(Call<Object> call, Response<Object> response) {
+                Log.d("HISTORY", "Đã lưu lịch sử xuất kho");
+            }
+            @Override
+            public void onFailure(Call<Object> call, Throwable t) {
+                Log.e("HISTORY", "Lỗi lưu lịch sử: " + t.getMessage());
+                Log.e("HISTORY", "Lỗi kết nối: " + t.getMessage());
             }
         });
     }
