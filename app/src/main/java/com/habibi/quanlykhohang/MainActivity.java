@@ -53,6 +53,11 @@ public class MainActivity extends AppCompatActivity {
             Intent intent = new Intent(MainActivity.this, InventoryActivity.class);
             startActivity(intent);
         });
+        LinearLayout btnPicking = findViewById(R.id.btnPickingLayout);
+        btnPicking.setOnClickListener(v -> {
+            Intent intent = new Intent(MainActivity.this, PickingListActivity.class);
+            startActivity(intent);
+        });
         Button btnLogout = findViewById(R.id.btnLogout); // Tìm nút id btnLogout trong XML
         btnLogout.setOnClickListener(v -> {
             // A. Xóa Token trong máy

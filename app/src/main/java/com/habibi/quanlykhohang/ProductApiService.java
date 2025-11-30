@@ -37,5 +37,15 @@ public interface ProductApiService {
     Call<Object> addTransaction(@Body WarehouseTransaction transaction);
     @GET("api/SupplierApi")
     Call<List<Supplier>> getSuppliers();
+    @GET("api/OrderPicking/pending")
+    Call<List<ExportOrder>> getPendingOrders();
+
+    // Lấy chi tiết đơn
+    @GET("api/OrderPicking/detail/{id}")
+    Call<ExportOrder> getOrderDetail(@Path("id") int id);
+
+    // Xác nhận xong
+    @POST("api/OrderPicking/complete/{id}")
+    Call<Void> completeOrder(@Path("id") int id);
 }
 
