@@ -12,7 +12,16 @@ public class ExportOrderDetail implements Serializable {
 
     @SerializedName("quantity")
     private int quantity;
+    private boolean isPicked = false;
 
+    // --- THÊM 2 HÀM NÀY VÀO ---
+    public boolean isPicked() {
+        return isPicked;
+    }
+
+    public void setPicked(boolean picked) {
+        isPicked = picked;
+    }
     public Product getProduct() { return product; }
     public int getQuantity() { return quantity; }
 }
