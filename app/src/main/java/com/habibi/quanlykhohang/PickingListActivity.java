@@ -25,6 +25,7 @@ public class PickingListActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_picking_list);
 
+        // Sử dụng RetrofitClient để có Token
         apiService = RetrofitClient.getService(this);
 
         lvOrders = findViewById(R.id.lvOrders);
@@ -35,19 +36,16 @@ public class PickingListActivity extends AppCompatActivity {
         adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, orderList);
         lvOrders.setAdapter(adapter);
 
-        // Tải dữ liệu
+        // Tải dữ liệu ban đầu
         loadPendingOrders();
 
-        // Sự kiện bấm vào một đơn -> Sang màn hình chi tiết (sẽ làm sau)
+        // --- SỬA ĐOẠN NÀY: XỬ LÝ KHI BẤM VÀO ĐƠN ---
         lvOrders.setOnItemClickListener((parent, view, position, id) -> {
             ExportOrder selected = orderList.get(position);
-
-            // Chuyển sang màn hình chi tiết (PickingDetailActivity - Tạo ở bước sau)
-            Intent intent = new Intent(PickingListActivity.this, PickingDetailActivity.class);
-            intent.putExtra("orderId", selected.getId());
-            intent.putExtra("orderCode", selected.getOrderCode());
-            startActivity(intent);
+            // Gọi hàm xác nhận nhận đơn trước khi chuyển màn hình
+            confirmStartPicking(selected);
         });
+        // -------------------------------------------
 
         btnReturn.setOnClickListener(v -> finish());
         btnRefresh.setOnClickListener(v -> loadPendingOrders());
@@ -57,6 +55,42 @@ public class PickingListActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         loadPendingOrders(); // Tải lại khi quay lại màn hình này
+    }
+
+    // Hàm gọi API nhận đơn (Start Picking)
+    private void confirmStartPicking(ExportOrder order) {
+        apiService.startPicking(order.getId()).enqueue(new Callback<Object>() {
+            @Override
+            public void onResponse(Call<Object> call, Response<Object> response) {
+                if (response.isSuccessful()) {
+                    // 1. Thành công (Server đã khóa đơn cho bạn)
+                    // -> Chuyển sang màn hình chi tiết
+                    Intent intent = new Intent(PickingListActivity.this, PickingDetailActivity.class);
+                    intent.putExtra("orderId", order.getId());
+                    intent.putExtra("orderCode", order.getOrderCode());
+                    startActivity(intent);
+                } else {
+                    // 2. Thất bại (Có thể người khác đã nhận mất rồi)
+                    try {
+                        String msg = "Lỗi";
+                        if (response.errorBody() != null) {
+                            msg = response.errorBody().string();
+                        }
+                        Toast.makeText(PickingListActivity.this, "Không thể nhận đơn: " + msg, Toast.LENGTH_LONG).show();
+
+                        // Tải lại danh sách để cập nhật tình trạng mới nhất
+                        loadPendingOrders();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Object> call, Throwable t) {
+                Toast.makeText(PickingListActivity.this, "Lỗi kết nối: " + t.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     private void loadPendingOrders() {
