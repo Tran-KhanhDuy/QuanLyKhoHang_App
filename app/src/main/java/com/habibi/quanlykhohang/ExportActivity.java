@@ -33,8 +33,9 @@ import io.realm.Realm;
 
 public class ExportActivity extends AppCompatActivity {
     private ProductApiService apiService;
-    private AutoCompleteTextView etName;
-    private EditText etBarcode, etQuantity, etLocation, etProductUnit, etProductDescription;
+    private AutoCompleteTextView etName, etProductUnit;
+
+    private EditText etBarcode, etQuantity, etLocation, etProductDescription;
     private TextView tvCurrentStock, tvCreateDate, tvUpdateDate;
     private ArrayAdapter<String> nameAdapter;
     private List<Product> suggestedProducts = new ArrayList<>();
@@ -65,7 +66,18 @@ public class ExportActivity extends AppCompatActivity {
         etName = findViewById(R.id.etName);
         etQuantity = findViewById(R.id.etQuantity);
         etLocation = findViewById(R.id.etLocation);
+
         etProductUnit = findViewById(R.id.etProductUnit);
+        String[] units = {"-- Chọn đơn vị tính --", "Cái", "Thùng", "Bịch", "Kg", "Tấn", "Mét", "Lít"};
+
+        ArrayAdapter<String> unitAdapter = new ArrayAdapter<>(this,
+                android.R.layout.simple_dropdown_item_1line, units);
+
+        etProductUnit.setAdapter(unitAdapter);
+        etProductUnit.setThreshold(0); // gõ hoặc bấm vào là hiện danh sách
+
+        etProductUnit.setOnClickListener(v -> etProductUnit.showDropDown());
+
         etProductDescription = findViewById(R.id.etProductDescription);
         tvCurrentStock = findViewById(R.id.tvCurrentStock);
         tvCreateDate = findViewById(R.id.tvCreateDate);
