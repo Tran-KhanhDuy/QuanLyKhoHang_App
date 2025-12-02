@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.speech.RecognizerIntent;
 import android.util.Log;
 import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -31,8 +32,8 @@ import com.google.zxing.integration.android.IntentResult;
 
 public class ImportActivity extends AppCompatActivity {
     private ProductApiService apiService;
-
-    private EditText etProductCode, etProductName, etQuantity, etLocation, etProductUnit, etProductDescription;
+    private AutoCompleteTextView etProductUnit;
+    private EditText etProductCode, etProductName, etQuantity, etLocation, etProductDescription;
     private Button btnScan, btnSave;
     private TextView tvStatus;
 
@@ -67,7 +68,17 @@ public class ImportActivity extends AppCompatActivity {
         etProductName = findViewById(R.id.etName);
         etQuantity = findViewById(R.id.etQuantity);
         etLocation = findViewById(R.id.etLocation);
+
         etProductUnit = findViewById(R.id.etProductUnit);
+        String[] units = {"-- Chọn đơn vị tính --", "Cái", "Thùng", "Bịch", "Kg", "Tấn", "Mét", "Lít"};
+
+        ArrayAdapter<String> unitAdapter = new ArrayAdapter<>(this,
+                android.R.layout.simple_dropdown_item_1line, units);
+
+        etProductUnit.setAdapter(unitAdapter);
+        etProductUnit.setThreshold(0); // gõ hoặc bấm vào là hiện danh sách
+
+        etProductUnit.setOnClickListener(v -> etProductUnit.showDropDown());
         etProductDescription = findViewById(R.id.etProductDescription);
         btnScan = findViewById(R.id.btnScan);
         btnSave = findViewById(R.id.btnSave);
