@@ -93,16 +93,17 @@
                     android:gravity="center_vertical"
                     android:layout_marginBottom="12dp">
 
-                    <EditText
+                    <AutoCompleteTextView
                         android:id="@+id/etName"
                         android:layout_width="0dp"
                         android:layout_height="45dp"
                         android:layout_weight="1"
-                        android:hint="Nhập tên sản phẩm"
+                        android:hint="Nhập tên sản phẩm (Gợi ý)"
                         android:inputType="textCapSentences"
                         android:padding="8dp"
                         android:background="@android:drawable/edit_text"
-                        android:textColor="#000000" />
+                        android:textColor="#000000"
+                        android:completionThreshold="1" />
 
                     <ImageButton
                         android:id="@+id/btnVoiceName"
