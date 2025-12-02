@@ -39,7 +39,7 @@ public class PickingDetailActivity extends AppCompatActivity {
     private int orderId;
     private List<ExportOrderDetail> detailList = new ArrayList<>();
     private ArrayAdapter<ExportOrderDetail> adapter;
-
+    private boolean isOrderCompleted = false;
     // Biến lưu vị trí món hàng đang được chọn để kiểm tra
     private int currentCheckingPosition = -1;
 
@@ -256,6 +256,7 @@ public class PickingDetailActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<Void> call, Response<Void> response) {
                 if (response.isSuccessful()) {
+                    isOrderCompleted = true;
                     Toast.makeText(PickingDetailActivity.this, "Đã hoàn thành đơn hàng!", Toast.LENGTH_LONG).show();
                     finish();
                 } else {
@@ -265,6 +266,33 @@ public class PickingDetailActivity extends AppCompatActivity {
             @Override
             public void onFailure(Call<Void> call, Throwable t) {
                 Toast.makeText(PickingDetailActivity.this, "Lỗi mạng", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+
+        // Nếu thoát màn hình mà CHƯA hoàn thành đơn -> Gọi API nhả đơn
+        if (!isOrderCompleted) {
+            releaseOrder();
+        }
+    }
+
+    // Hàm gọi API nhả đơn
+    private void releaseOrder() {
+        // Lưu ý: Gọi API trong onDestroy nên dùng enqueue (bất đồng bộ) để không chặn UI
+        // Nhưng vì Activity đang đóng, ta không cần cập nhật UI hay Toast gì cả.
+        // Chỉ cần gửi lệnh đi là được.
+        apiService.cancelPicking(orderId).enqueue(new Callback<Object>() {
+            @Override
+            public void onResponse(Call<Object> call, Response<Object> response) {
+                // Gửi thành công, Server tự reset trạng thái
+            }
+
+            @Override
+            public void onFailure(Call<Object> call, Throwable t) {
+                // Lỗi mạng thì chịu, chấp nhận rủi ro treo đơn 1 lúc
             }
         });
     }

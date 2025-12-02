@@ -47,5 +47,9 @@ public interface ProductApiService {
     // Xác nhận xong
     @POST("api/OrderPicking/complete/{id}")
     Call<Void> completeOrder(@Path("id") int id);
+    @POST("api/OrderPicking/start/{id}")
+    Call<Object> startPicking(@Path("id") int id);
+    @POST("api/OrderPicking/cancel/{id}")
+    Call<Object> cancelPicking(@retrofit2.http.Path("id") int id);
 }
 
