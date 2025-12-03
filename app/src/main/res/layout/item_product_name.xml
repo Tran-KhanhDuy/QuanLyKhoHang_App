@@ -1,19 +1,49 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:layout_marginHorizontal="4dp"
+    android:layout_marginVertical="4dp"
+    app:cardBackgroundColor="#FFFFFF"
+    app:cardCornerRadius="10dp"
+    app:cardElevation="2dp"
+    android:foreground="?attr/selectableItemBackground"> <LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:gravity="center_vertical"
+    android:padding="12dp">
+
+    <ImageView
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:src="@drawable/ic_inventory"/>
+<!--        app:tint="#667eea"-->
+<!--        android:padding="4dp"-->
+<!--        android:background="@drawable/bg_home_card"-->
+<!--        android:backgroundTint="#F3E5F5"-->
+<!--        android:layout_marginEnd="12dp"/>-->
 
     <TextView
         android:id="@+id/tvProductName"
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:textSize="18sp"
-        android:padding="10dp"
-        android:textColor="#222"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
         android:text="Tên sản phẩm"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        android:textSize="16sp"
+        android:textStyle="bold"
+        android:textColor="#263238" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <ImageView
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:src="@android:drawable/ic_media_play"
+        app:tint="#B0BEC5"
+        android:rotation="0"
+        android:scaleX="0.7"
+        android:scaleY="0.7"/>
+
+</LinearLayout>
+
+</androidx.cardview.widget.CardView>

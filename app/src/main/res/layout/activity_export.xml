@@ -1,194 +1,253 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="#F5F5F5"
+        android:layout_height="match_parent"
+        android:background="#F5F7FA"
         android:orientation="vertical"
         android:padding="16dp">
 
-        <!-- Nút quay lại -->
-        <ImageButton
-            android:id="@+id/btnReturn"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:src="@drawable/return_button"
-            android:background="@android:color/transparent"
-            android:contentDescription="Quay lại"
-            android:layout_gravity="start"
-            android:layout_marginBottom="8dp"/>
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="32dp"
-            android:gravity="center"
-            android:text="Xuất Hàng Kho"
-            android:textColor="#FF9800"
-            android:textSize="24sp"
-            android:textStyle="bold" />
-
-        <!-- Quét mã + các trường -->
-        <Button
-            android:id="@+id/btnScan"
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:layout_marginBottom="16dp"
-            android:backgroundTint="#2196F3"
-            android:text="Quét Mã Vạch"
-            android:textSize="16sp" />
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="4dp"
-            android:text="Mã Sản Phẩm:"
-            android:textStyle="bold" />
-        <EditText
-            android:id="@+id/etBarcode"
-            android:layout_width="match_parent"
-            android:layout_height="45dp"
-            android:layout_marginBottom="12dp"
-            android:hint="Nhập hoặc quét mã vạch"
-            android:inputType="text"
-            android:padding="8dp"
-            android:textColor="#000000" />
-
-        <AutoCompleteTextView
-            android:id="@+id/etName"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="8dp"
-            android:background="#E3F2FD"
-            android:padding="8dp"
-            android:hint="Tên sản phẩm"
-            android:textSize="16sp" />
-
-        <TextView
-            android:id="@+id/tvCurrentStock"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="16dp"
-            android:background="#E8F5E9"
-            android:padding="8dp"
-            android:text="Tồn kho: --"
-            android:textColor="#4CAF50"
-            android:textSize="16sp" />
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="4dp"
-            android:text="Số Lượng Xuất:"
-            android:textStyle="bold" />
-
         <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="16dp">
+            android:gravity="center_vertical"
+            android:layout_marginBottom="24dp">
 
-            <Button
-                android:id="@+id/btnDecrease"
-                android:layout_width="55dp"
-                android:layout_height="55dp"
-                android:text="-"
-                android:textSize="19sp"
-                android:backgroundTint="#E57373"
-                android:textColor="#FFFFFF"/>
+            <ImageButton
+                android:id="@+id/btnReturn"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:src="@drawable/return_button"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:contentDescription="Quay lại" />
 
-            <EditText
-                android:id="@+id/etQuantity"
+            <TextView
                 android:layout_width="0dp"
-                android:layout_height="45dp"
+                android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:hint="Nhập số lượng"
-                android:inputType="number"
-                android:padding="8dp"
-                android:textColor="#000000" />
+                android:gravity="center"
+                android:text="Xuất Hàng Kho"
+                android:textColor="#FF9800"
+                android:textSize="24sp"
+                android:textStyle="bold"
+                android:layout_marginEnd="40dp"/> </LinearLayout>
 
-            <Button
-                android:id="@+id/btnIncrease"
-                android:layout_width="55dp"
-                android:layout_height="55dp"
-                android:text="+"
-                android:textSize="19sp"
-                android:backgroundTint="#4CAF50"
-                android:textColor="#FFFFFF"/>
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1">
 
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
 
-        </LinearLayout>
-        <!-- Vị trí kho -->
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="4dp"
-            android:text="Vị Trí Kho:"
-            android:textStyle="bold" />
-        <EditText
-            android:id="@+id/etLocation"
-            android:layout_width="match_parent"
-            android:layout_height="45dp"
-            android:layout_marginBottom="12dp"
-            android:hint="Ví dụ: A1, B2..."
-            android:inputType="text"
-            android:padding="8dp"
-            android:textColor="#000000" />
+                <Button
+                    android:id="@+id/btnScan"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:layout_marginBottom="20dp"
+                    android:backgroundTint="#2196F3"
+                    android:text="📷  Quét Mã Vạch"
+                    android:textSize="16sp"
+                    android:textStyle="bold"/>
 
-        <!-- Đơn vị tính -->
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="4dp"
-            android:text="Đơn vị tính:"
-            android:textStyle="bold" />
-        <AutoCompleteTextView
-            android:id="@+id/etProductUnit"
-            android:layout_width="match_parent"
-            android:layout_height="45dp"
-            android:hint="Chọn đơn vị tính"
-            android:padding="8dp"
-            android:textColor="#000000"/>
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="4dp"
+                    android:text="Mã Sản Phẩm:"
+                    android:textStyle="bold"
+                    android:textColor="#455A64"/>
+                <EditText
+                    android:id="@+id/etBarcode"
+                    android:layout_width="match_parent"
+                    android:layout_height="45dp"
+                    android:layout_marginBottom="12dp"
+                    android:hint="Nhập hoặc quét mã..."
+                    android:inputType="text"
+                    android:padding="10dp"
+                    android:background="@android:drawable/edit_text"
+                    android:textColor="#000000" />
 
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="4dp"
+                    android:text="Tên Sản Phẩm (Tìm kiếm):"
+                    android:textStyle="bold"
+                    android:textColor="#455A64"/>
 
-        <!-- Mô tả sản phẩm -->
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="4dp"
-            android:text="Mô tả sản phẩm:"
-            android:textStyle="bold" />
-        <EditText
-            android:id="@+id/etProductDescription"
-            android:layout_width="match_parent"
-            android:layout_height="45dp"
-            android:layout_marginBottom="12dp"
-            android:hint="Nhập mô tả"
-            android:inputType="text"
-            android:padding="8dp"
-            android:textColor="#000000" />
-        <TextView
-            android:id="@+id/tvCreateDate"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Ngày tạo: "/>
-        <TextView
-            android:id="@+id/tvUpdateDate"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Ngày cập nhật: "/>
-        <!-- Nút xuất ở dưới cùng -->
+                <AutoCompleteTextView
+                    android:id="@+id/etName"
+                    android:layout_width="match_parent"
+                    android:layout_height="45dp"
+                    android:layout_marginBottom="8dp"
+                    android:padding="10dp"
+                    android:background="@android:drawable/edit_text"
+                    android:hint="Nhập tên để tìm kiếm..."
+                    android:textSize="16sp"
+                    android:completionThreshold="1"/>
+
+                <TextView
+                    android:id="@+id/tvCurrentStock"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="20dp"
+                    android:background="#FFF3E0"
+                    android:padding="12dp"
+                    android:text="Tồn kho: --"
+                    android:textAlignment="center"
+                    android:textColor="#E65100"
+                    android:textStyle="bold"
+                    android:textSize="16sp" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="4dp"
+                    android:text="Số Lượng Xuất:"
+                    android:textStyle="bold"
+                    android:textColor="#455A64"/>
+
+                <LinearLayout
+                    android:orientation="horizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:layout_marginBottom="16dp">
+
+                    <Button
+                        android:id="@+id/btnDecrease"
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
+                        android:text="-"
+                        android:textSize="20sp"
+                        android:backgroundTint="#FFCCBC"
+                        android:textColor="#D32F2F"
+                        android:insetTop="0dp"
+                        android:insetBottom="0dp"/>
+
+                    <EditText
+                        android:id="@+id/etQuantity"
+                        android:layout_width="0dp"
+                        android:layout_height="45dp"
+                        android:layout_weight="1"
+                        android:hint="0"
+                        android:gravity="center"
+                        android:inputType="number"
+                        android:padding="8dp"
+                        android:textColor="#000000"
+                        android:textStyle="bold"
+                        android:textSize="18sp"/>
+
+                    <Button
+                        android:id="@+id/btnIncrease"
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
+                        android:text="+"
+                        android:textSize="20sp"
+                        android:backgroundTint="#C8E6C9"
+                        android:textColor="#2E7D32"
+                        android:insetTop="0dp"
+                        android:insetBottom="0dp"/>
+                </LinearLayout>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="4dp"
+                    android:text="Vị Trí Kho:"
+                    android:textStyle="bold"
+                    android:textColor="#455A64"/>
+                <EditText
+                    android:id="@+id/etLocation"
+                    android:layout_width="match_parent"
+                    android:layout_height="45dp"
+                    android:layout_marginBottom="12dp"
+                    android:hint="Ví dụ: A1, B2..."
+                    android:inputType="text"
+                    android:padding="10dp"
+                    android:background="@android:drawable/edit_text"
+                    android:textColor="#000000" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="4dp"
+                    android:text="Đơn vị tính:"
+                    android:textStyle="bold"
+                    android:textColor="#455A64"/>
+                <AutoCompleteTextView
+                    android:id="@+id/etProductUnit"
+                    android:layout_width="match_parent"
+                    android:layout_height="45dp"
+                    android:layout_marginBottom="12dp"
+                    android:hint="Chọn đơn vị tính"
+                    android:padding="10dp"
+                    android:background="@android:drawable/edit_text"
+                    android:textColor="#000000"/>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="4dp"
+                    android:text="Mô tả / Ghi chú:"
+                    android:textStyle="bold"
+                    android:textColor="#455A64"/>
+                <EditText
+                    android:id="@+id/etProductDescription"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:minHeight="45dp"
+                    android:layout_marginBottom="16dp"
+                    android:hint="Nhập lý do xuất kho..."
+                    android:inputType="textMultiLine"
+                    android:padding="10dp"
+                    android:background="@android:drawable/edit_text"
+                    android:textColor="#000000" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_marginBottom="20dp">
+
+                    <TextView
+                        android:id="@+id/tvCreateDate"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Ngày tạo: --/--/----"
+                        android:textColor="#757575"
+                        android:textSize="12sp"/>
+                    <TextView
+                        android:id="@+id/tvUpdateDate"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Ngày cập nhật: --/--/----"
+                        android:textColor="#757575"
+                        android:textSize="12sp"/>
+                </LinearLayout>
+
+            </LinearLayout>
+        </ScrollView>
+
         <Button
             android:id="@+id/btnExport"
             android:layout_width="match_parent"
             android:layout_height="60dp"
-            android:backgroundTint="#FF9800"
-            android:text="Xuất Hàng"
+            android:text="XUẤT HÀNG"
             android:textSize="18sp"
-            android:layout_marginTop="12dp" />
+            android:textStyle="bold"
+            android:textColor="#FFFFFF"
+            android:backgroundTint="#FF9800"
+            app:cornerRadius="30dp"
+            android:elevation="4dp"/>
 
     </LinearLayout>
-</ScrollView>
+</FrameLayout>
