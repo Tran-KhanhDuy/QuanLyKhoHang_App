@@ -116,20 +116,13 @@
                         android:gravity="end"
                         android:orientation="vertical">
 
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="SỐ LƯỢNG"
-                            android:textSize="12sp"
-                            android:textStyle="bold"
-                            android:textColor="#90A4AE"/>
 
                         <TextView
                             android:id="@+id/tvQuantity"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="0"
-                            android:textSize="28sp"
+                            android:textSize="20sp"
                             android:textStyle="bold"
                             android:textColor="#4CAF50"/> </LinearLayout>
                 </LinearLayout>
