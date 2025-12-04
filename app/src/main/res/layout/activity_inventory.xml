@@ -1,85 +1,99 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="#F5F7FA"
+    android:orientation="vertical"
+    android:padding="16dp">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:padding="16dp"
-        android:background="#F5F5F5">
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:layout_marginBottom="20dp">
 
-        <!-- Hàng tiêu đề: menu 3 gạch + quay lại + tiêu đề -->
-        <!-- Hàng tiêu đề: quay lại + tiêu đề + menu 3 gạch bên phải -->
-        <LinearLayout
-            android:layout_width="match_parent"
+        <ImageButton
+            android:id="@+id/btnReturn"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:src="@drawable/return_button"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:contentDescription="Quay lại" />
+
+        <TextView
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:gravity="center_vertical"
-            android:layout_marginBottom="16dp">
+            android:layout_weight="1"
+            android:text="Danh Sách Sản Phẩm"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            android:gravity="center"
+            android:textColor="#667eea" />
+        <ImageButton
+        android:id="@+id/btnMenu"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:src="@drawable/ic_menu_24"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        android:contentDescription="Menu"/>
+<!--        app:tint="#667eea"/>-->
+    </LinearLayout>
 
-            <!-- Nút quay lại bên trái -->
-            <ImageButton
-                android:id="@+id/btnReturn"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:src="@drawable/return_button"
-                android:background="@android:color/transparent"
-                android:contentDescription="Quay lại"
-                android:layout_marginEnd="8dp" />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginBottom="16dp">
 
-            <!-- Tiêu đề, chiếm hết phần giữa -->
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="Danh Sách Sản Phẩm"
-                android:textSize="24sp"
-                android:textStyle="bold"
-                android:gravity="center"
-                android:textColor="#2196F3" />
-
-            <!-- Icon menu 3 gạch bên phải -->
-            <ImageButton
-                android:id="@+id/btnMenu"
-                android:layout_width="37dp"
-                android:layout_height="35dp"
-                android:src="@drawable/ic_menu_24"
-                android:background="@android:color/transparent"
-                android:contentDescription="Menu"
-                android:layout_marginStart="8dp" />
-        </LinearLayout>
-
-
-        <!-- Nút thêm sản phẩm -->
         <Button
             android:id="@+id/btnAdd"
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:text="Thêm Sản Phẩm"
+            android:layout_width="0dp"
+            android:layout_height="55dp"
+            android:layout_weight="1"
+            android:text="+ Thêm Mới"
             android:textSize="16sp"
-            android:backgroundTint="#4CAF50"
+            android:textStyle="bold"
+            android:backgroundTint="#28a745"
             android:textColor="#FFFFFF"
-            android:layout_marginBottom="10dp" />
+            android:layout_marginEnd="8dp"
+            app:cornerRadius="10dp"
+            android:elevation="4dp"/>
 
-        <!-- Nút xuất hàng -->
         <Button
             android:id="@+id/btnDel"
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:text="Xuất hàng"
+            android:layout_width="0dp"
+            android:layout_height="55dp"
+            android:layout_weight="1"
+            android:text="Xuất Hàng"
             android:textSize="16sp"
-            android:backgroundTint="#F44336"
+            android:textStyle="bold"
+            android:backgroundTint="#FF9800"
             android:textColor="#FFFFFF"
-            android:layout_marginBottom="10dp" />
+            android:layout_marginStart="8dp"
+            app:cornerRadius="10dp"
+            android:elevation="4dp"/>
+    </LinearLayout>
 
-        <!-- Danh sách sản phẩm (ListView) -->
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        app:cardCornerRadius="15dp"
+        app:cardElevation="4dp"
+        app:cardBackgroundColor="#FFFFFF">
+
         <ListView
             android:id="@+id/lvInventory"
             android:layout_width="match_parent"
-            android:layout_height="461dp"
-            android:divider="#BDBDBD"
-            android:dividerHeight="1dp" />
-    </LinearLayout>
-</ScrollView>
+            android:layout_height="match_parent"
+            android:divider="#E0E0E0"
+            android:dividerHeight="1dp"
+            android:padding="8dp"
+            android:clipToPadding="false"
+            android:scrollbarStyle="outsideOverlay"/>
+
+    </androidx.cardview.widget.CardView>
+
+</LinearLayout>

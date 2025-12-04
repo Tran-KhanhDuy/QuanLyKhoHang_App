@@ -1,59 +1,83 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:padding="16dp"
-    android:background="#F5F5F5">
+    android:background="#F5F7FA"> <LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:gravity="center_vertical"
+    android:layout_marginBottom="20dp">
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:gravity="center_vertical"
-        android:layout_marginBottom="16dp">
-
-        <ImageButton
-            android:id="@+id/btnReturn"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:src="@drawable/return_button"
-            android:background="?attr/selectableItemBackgroundBorderless"/>
-
-        <TextView
-            android:id="@+id/tvOrderCode"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Đơn hàng: ..."
-            android:textSize="20sp"
-            android:textStyle="bold"
-            android:gravity="center"
-            android:textColor="#2196F3"/>
-    </LinearLayout>
+    <ImageButton
+        android:id="@+id/btnReturn"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:src="@drawable/return_button"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        android:contentDescription="Quay lại"
+        app:tint="#9C27B0"/> <TextView
+    android:id="@+id/tvOrderCode"
+    android:layout_width="0dp"
+    android:layout_height="wrap_content"
+    android:layout_weight="1"
+    android:text="Đơn hàng: ..."
+    android:textSize="22sp"
+    android:textStyle="bold"
+    android:gravity="center"
+    android:textColor="#9C27B0"
+    android:layout_marginEnd="40dp"/> </LinearLayout>
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Danh sách cần lấy:"
+        android:text="DANH SÁCH CẦN LẤY"
         android:textStyle="bold"
-        android:layout_marginBottom="8dp"/>
+        android:textColor="#546E7A"
+        android:textSize="14sp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginStart="4dp"/>
 
-    <ListView
-        android:id="@+id/lvDetails"
+    <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
-        android:divider="#CCCCCC"
-        android:dividerHeight="1dp"/>
+        app:cardCornerRadius="15dp"
+        app:cardElevation="4dp"
+        app:cardBackgroundColor="#FFFFFF">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <ListView
+                android:id="@+id/lvDetails"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:divider="#E0E0E0"
+                android:dividerHeight="1dp"
+                android:padding="8dp"
+                android:clipToPadding="false"
+                android:scrollbarStyle="outsideOverlay"/>
+        </LinearLayout>
+
+    </androidx.cardview.widget.CardView>
 
     <Button
         android:id="@+id/btnComplete"
         android:layout_width="match_parent"
         android:layout_height="60dp"
-        android:text="XÁC NHẬN ĐÃ LẤY ĐỦ HÀNG"
+        android:text="XÁC NHẬN HOÀN THÀNH"
         android:backgroundTint="#4CAF50"
         android:textSize="16sp"
         android:textStyle="bold"
-        android:layout_marginTop="16dp"/>
+        android:textColor="#FFFFFF"
+        android:layout_marginTop="20dp"
+        app:cornerRadius="30dp"
+        app:elevation="6dp"/>
 
 </LinearLayout>

@@ -26,7 +26,7 @@ public class RetrofitClient {
 
         // 3. QUAN TRỌNG: Nếu có Token thì gắn Interceptor vào để kẹp token theo
         if (token != null && !token.isEmpty()) {
-            clientBuilder.addInterceptor(new AuthInterceptor(token));
+            clientBuilder.addInterceptor(new AuthInterceptor(token, context));
         }
 
         OkHttpClient client = clientBuilder.build();
