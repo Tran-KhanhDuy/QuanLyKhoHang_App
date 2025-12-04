@@ -37,8 +37,8 @@ public class ImportActivity extends AppCompatActivity {
     private ProductApiService apiService;
 
     // Sửa EditText thành AutoCompleteTextView
-    private AutoCompleteTextView etProductName;
-    private EditText etProductCode, etQuantity, etLocation, etProductUnit, etProductDescription;
+    private AutoCompleteTextView etProductName, etProductUnit;
+    private EditText etProductCode, etQuantity, etLocation, etProductDescription;
     private Button btnScan, btnSave;
     private TextView tvStatus;
 
@@ -80,6 +80,16 @@ public class ImportActivity extends AppCompatActivity {
         etQuantity = findViewById(R.id.etQuantity);
         etLocation = findViewById(R.id.etLocation);
         etProductUnit = findViewById(R.id.etProductUnit);
+        String[] units = {"-- Chọn đơn vị tính --", "Cái", "Thùng", "Bịch", "Kg", "Tấn", "Mét", "Lít"};
+
+        ArrayAdapter<String> unitAdapter = new ArrayAdapter<>(this,
+                android.R.layout.simple_dropdown_item_1line, units);
+
+        etProductUnit.setAdapter(unitAdapter);
+        etProductUnit.setThreshold(0); // gõ hoặc bấm vào là hiện danh sách
+
+        etProductUnit.setOnClickListener(v -> etProductUnit.showDropDown());
+
         etProductDescription = findViewById(R.id.etProductDescription);
         btnScan = findViewById(R.id.btnScan);
         btnSave = findViewById(R.id.btnSave);

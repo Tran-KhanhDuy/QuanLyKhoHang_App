@@ -188,6 +188,7 @@
                     android:text="Đơn Vị Tính:"
                     android:textStyle="bold"
                     android:textColor="#455A64"/>
+
                 <AutoCompleteTextView
                     android:id="@+id/etProductUnit"
                     android:layout_width="match_parent"
